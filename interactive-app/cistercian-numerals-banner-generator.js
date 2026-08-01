@@ -1,0 +1,707 @@
+
+// #region constants
+//{
+
+/**
+	Enum for the names of colors available.
+	@enum{string}
+*/
+const COLOR = Object.freeze(
+	[
+		"WHITE",
+		"ORANGE",
+		"MAGENTA",
+		"LIGHT_BLUE",
+		"YELLOW",
+		"LIME",
+		"PINK",
+		"GRAY",
+		"LIGHT_GRAY",
+		"CYAN",
+		"PURPLE",
+		"BLUE",
+		"BROWN",
+		"GREEN",
+		"RED",
+		"BLACK",
+	]
+	.reduce((o, c) => (o[c] = c, o), {})
+);
+
+/** 
+	Enum for the names of patterns. The values are the name as used in the banner_patterns tag.
+	@enum {string}
+*/
+const PATTERN = Object.freeze({
+	BASE: "stripe_bottom",
+	BASE_DEXTER_CANTON: "square_bottom_left",
+	BASE_INDENTED: "triangles_bottom",
+	BASE_SINSITER_CANTON: "square_bottom_right",
+	BORDURE: "border",
+	CHEVRON: "triangle_bottom",
+	CHIEF: "stripe_top",
+	CHIEF_DEXTER_CANTON: "square_top_left",
+	CHIEF_INDENTED: "triangles_top",
+	CHIEF_SINISTER_CANTON: "square_top_right",
+	FESS: "stripe_middle",
+	INVERTED_CHEVRON: "triangle_top",
+	LOZENGE: "rhombus",
+	PALE_DEXTER: "stripe_left",
+	PALE_SININSTER: "stripe_right",
+	PER_FESS: "half_horizontal",
+	PER_FESS_INVERTED: "half_horizontal_bottom",
+	PER_PALE: "half_vertical",
+	PER_PALE_INVERTED: "half_vertical_right",
+});
+
+
+/**
+	@enum{number}
+*/
+const BANNER_SIDE = Object.freeze({
+	LEFT: 0,
+	RIGHT: 1,
+});
+
+//}
+// #endregion constants
+
+
+// #region datatypes
+//{
+
+/**
+	The color scheme to use for the two colors of the banner.
+	@typedef {Object} ColorScheme
+	@property {COLOR} foreground 
+	@property {COLOR} background
+*/
+
+
+/**
+	The banner color and the banner_patterns tag.
+	@typedef {Object} BannerSpecification
+	@property {COLOR} baseColor
+	@property {BannerSpecificationBuilder} banner_patterns
+*/
+
+
+/**
+	@typedef DigitParameters
+	@property {number} exponent The exponent of base-10 for the place value.
+	@property {number} faceValue The face value of the digit 0-9.
+*/
+
+//}
+// #endregion data types
+
+
+/**
+	The banner color and the banner_patterns tag.
+*/
+class BannerSpecificationBuilder {
+	constructor(){
+		/**
+			@type {array.<string>}
+			The pattern elements 
+		*/
+		this._patterns = [];
+	}
+	/**
+		@type {COLOR}
+		The base color of the banner. May be set only once.
+	*/
+	get baseColor(){
+		if (typeof this._baseColor === "undefined"){
+			throw "baseColor accessed before setting";
+		}
+		return this._baseColor;
+	}
+	
+	set baseColor(color){
+		if (typeof this._baseColor !== "undefined"){
+			throw "baseColor is write-once";
+		}
+		this._baseColor = color;
+	};
+	
+	/**
+		@type {string} The value for the banner_patterns tag.
+	*/
+	get banner_patterns(){
+		return `[${this._patterns.join(",")}]`;
+	}
+	
+	/**
+		Add a pattern to the banner.
+		@param {COLOR} patternColor
+		@param {PATTERN} patternShape
+	*/
+	add(patternColor, patternShape){
+		this._patterns.push(
+		`{pattern:${patternShape.toLowerCase()},color:${patternColor.toLowerCase()}}`
+	);
+	}
+	
+}
+
+
+// implementation of the main flowchart
+class PatternGeneratorStateMachine {
+	
+	/**
+		@type {DigitParameters
+		One of the two numbers to set. Only set if either is a 3. Always a 3.
+	*/
+	C;
+	
+	/**
+		@type {DigitParameters
+		One of the two numbers to set. Only set if either is a 3. The non-3 digit if they're not equal.
+	*/
+	D;
+	
+	/**
+		@param {DigitParameters} A One of the two numbers to set. The larger one if they're not equal.
+		@param {DigitParameters} B One of the two numbers to set. The smaller one if they're not equal.
+		@param {BANNER_SIDE} side
+		@param {ColorScheme} colors
+		@param {BannerSpecificationBuilder} banner
+	*/
+	constructor(A, B, side, colors, banner){
+		this.A      = A;
+		this.B      = B;
+		this.side   = side;
+		this.colors = colors;
+		this.banner = banner;
+	}
+	
+	
+	/**
+		Run the auxiliary flowchart with a single specified digit.
+		@param {DigitParameters} digitParameters
+	*/
+	runAuxiliaryFlowchartWith(digitParameters){
+		this.applyCorePatternOfSingleDigit(digitParameters);
+		/***
+		applyCorePatternOfSingleDigit(
+			digitParameters, 
+			this.side, this.colors, this.banner);
+		*/
+	}
+	
+	
+	// #region states
+	//{
+	
+	// entry point for the flowchart.
+	START(){
+		if (this.A.faceValue!=3 && this.B.faceValue!=3){
+			switch(this.A.faceValue){
+				case 8:
+				case 9:
+					this.banner.baseColor = this.colors.foreground;
+					switch(this.B.faceValue){
+						case 7:
+							this.banner.add(
+								this.colors.background,
+								(this.B.exponent <2) 
+									? PATTERN.PER_FESS 
+									: PATTERN.PER_FESS_INVERTED
+							);
+							if(this.A.faceValue==8){
+								this.banner.add(
+									this.colors.foreground,
+									PATTERN.BORDURE
+								);
+								this.runAuxiliaryFlowchartWith(this.A);
+							} else { // A=9
+								this.runAuxiliaryFlowchartWith(this.A);
+								this.banner.add(
+									this.colors.foreground,
+									(this.B.exponent &1==0)
+										? PATTERN.PALE_SININSTER
+										: PATTERN.PALE_DEXTER
+								);
+							}
+							return this.COLLECTION_5();
+							
+						case 8:
+						case 9:
+							if (this.A.faceValue==this.B.faceValue){
+								this.banner.add(
+									this.colors.background,
+									(this.B.exponent <2)
+										? PATTERN.CHIEF
+										: PATTERN.BASE
+								);
+								this.runAuxiliaryFlowchartWith(this.A);
+								return this.COLLECTION_5();
+							} else { // digits are 9 & 8
+								this.runAuxiliaryFlowchartWith(this.A);
+								return this.COLLECTION_3();
+							}
+						
+						default: // B<7
+							return this.COLLECTION_1();
+					}
+					
+				default: // A<8
+					this.banner.baseColor = this.colors.background;
+					return this.COLLECTION_1();
+			}
+		} else { // at least one of the values is 3
+			this.banner.baseColor=this.colors.foreground;
+			this.banner.add(
+				this.colors.background,
+				PATTERN.LOZENGE
+			);
+			// the two digits, with at least C being a 3.
+			[this.C,this.D] = (
+				(this.A.faceValue==3) 
+					? [this.A, this.B] 
+					: [this.B, this.A]);
+			switch(this.D.faceValue){
+				case 3:
+					this.banner.add(
+						this.colors.background,
+						(this.side == BANNER_SIDE.RIGHT) 
+							? PATTERN.PER_PALE 
+							: PATTERN.PER_PALE_INVERTED
+					);
+					this.banner.add(
+						this.colors.foreground,
+						PATTERN.CHIEF_INDENTED
+					);
+					this.banner.add(
+						this.colors.foreground,
+						PATTERN.BASE_INDENTED
+					);
+					return this.COLLECTION_5();
+					
+				case 2:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+					return this.COLLECTION_4();
+				
+				case 0:
+				case 1:
+				case 5:
+					this.banner.add(
+						this.colors.background,
+						(this.side === BANNER_SIDE.RIGHT) 
+							? PATTERN.PER_PALE 
+							: PATTERN.PER_PALE_INVERTED
+					);
+					this.banner.add(
+						this.colors.foreground,
+						(this.C.exponent <2)
+							? PATTERN.CHIEF_INDENTED
+							: PATTERN.BASE_INDENTED
+					);
+					return this.COLLECTION_4();
+			}
+		}
+	}
+	
+	
+	COLLECTION_1(){
+		this.runAuxiliaryFlowchartWith(this.A);
+		if (
+			(this.A.faceValue===this.B.faceValue) &&
+			(this.A.faceValue===6 || this.A.faceValue===7)
+		){
+			return this.COLLECTION_5();
+		} else {
+			switch (this.A.faceValue){
+				case 6:
+					return this.COLLECTION_2();
+					
+				case 7:
+				case 8:
+				case 9:
+					switch (this.B.faceValue) {
+						case 2:
+							return this.COLLECTION_3();
+						
+						case 0:
+						case 1:
+						case 5:
+						case 6:
+							return this.COLLECTION_2();
+						
+						case 4:
+							this.banner.add(
+								this.colors.background,
+								(this.B.exponent <2)
+									? PATTERN.PER_FESS
+									: PATTERN.PER_FESS_INVERTED
+							);
+							this.runAuxiliaryFlowchartWith(this.B);
+							return this.COLLECTION_6();
+					}
+				
+				default: // A<6
+					return this.COLLECTION_3();
+			}
+		}
+	}
+	
+	
+	COLLECTION_2(){
+		this.banner.add(
+			this.colors.background,
+			(this.B.exponent <2)
+				? PATTERN.PER_FESS
+				: PATTERN.PER_FESS_INVERTED
+		);
+		return this.COLLECTION_3();
+	}
+	
+	
+	COLLECTION_3(){
+		this.runAuxiliaryFlowchartWith(this.B);
+		return this.COLLECTION_5();
+	}
+	
+	
+	COLLECTION_4(){
+		this.banner.add(
+			(this.D.faceValue===8 || this.D.faceValue===9)
+				? this.colors.foreground
+				: this.colors.background, 
+			(this.D.exponent <2)
+				? PATTERN.PER_FESS
+				: PATTERN.PER_FESS_INVERTED,
+		);
+		this.runAuxiliaryFlowchartWith(this.D);
+		switch (this.D.faceValue){
+			case 0:
+			case 2:
+			case 4:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				return this.COLLECTION_5();
+			
+			case 1:
+			case 5:
+				return this.COLLECTION_6();
+		}
+	}
+	
+	
+	COLLECTION_5(){
+		this.banner.add(this.colors.background, PATTERN.FESS);
+		return this.COLLECTION_6();
+	}
+	
+	
+	COLLECTION_6(){
+		this.banner.add(
+			this.colors.foreground,
+			(this.side === BANNER_SIDE.RIGHT)
+				? PATTERN.PALE_DEXTER
+				: PATTERN.PALE_SININSTER
+		);
+		return true; //complete
+	}
+	
+	//}
+	// #endregion states
+	
+	
+	// implementation of the auxiliary flowchart
+	/**
+		@param {DigitParameters} digitParameters One of the two numbers to set. This subroutine only depends on a singular digit, the caller choses which to pass to this argument.
+	*/
+	applyCorePatternOfSingleDigit(digitParameters){
+		switch (digitParameters.faceValue){
+			case 0:
+				// core part of 0 is to leave pattern blank
+				return;
+			
+			case 1:
+				this.banner.add(
+					this.colors.foreground,
+					(digitParameters.exponent <2)
+						? PATTERN.CHIEF
+						: PATTERN.BASE
+				);
+				return;
+			
+			case 2:
+				this.banner.add(
+					this.colors.foreground,
+					(digitParameters.exponent <2)
+						? PATTERN.PER_FESS
+						: PATTERN.PER_FESS_INVERTED
+				);
+				this.banner.add(
+					this.colors.background,
+					(digitParameters.exponent <2)
+						? PATTERN.CHIEF
+						: PATTERN.BASE
+				);
+				return;
+			
+			// this subroutine is never called for 3
+			
+			case 4:
+				this.banner.add(
+					this.colors.foreground,
+					(digitParameters.exponent <2)
+						? PATTERN.INVERTED_CHEVRON
+						: PATTERN.CHEVRON
+				);
+				this.banner.add(
+					this.colors.background,
+					[
+						PATTERN.CHIEF_DEXTER_CANTON,
+						PATTERN.CHIEF_SINISTER_CANTON,
+						PATTERN.BASE_DEXTER_CANTON,
+						PATTERN.BASE_SINSITER_CANTON,
+					][digitParameters.exponent]
+				);
+				return;
+			
+			case 5:
+				this.banner.add(
+					this.colors.foreground,
+					(digitParameters.exponent <2)
+						? PATTERN.INVERTED_CHEVRON
+						: PATTERN.CHEVRON
+				);
+				return;
+			
+			case 6:
+				this.banner.add(
+					this.colors.foreground,
+					(this.side === BANNER_SIDE.RIGHT)
+						? PATTERN.PALE_SININSTER
+						: PATTERN.PALE_DEXTER
+				);
+				return;
+			
+			case 7:
+				this.banner.add(this.colors.foreground, PATTERN.BORDURE);
+				this.banner.add(
+					this.colors.foreground,
+					(this.side === BANNER_SIDE.RIGHT)
+						? PATTERN.PALE_SININSTER
+						: PATTERN.PALE_DEXTER
+				);
+				return;
+			
+			case 8:
+				this.banner.add(
+					this.colors.background,
+					(digitParameters.exponent <2)
+						? PATTERN.CHIEF
+						: PATTERN.BASE
+				);
+				this.banner.add(
+					this.colors.foreground,
+					(this.side === BANNER_SIDE.RIGHT)
+						? PATTERN.PALE_SININSTER
+						: PATTERN.PALE_DEXTER
+				);
+				return;
+			
+			case 9:
+				this.banner.add(
+					this.colors.background,
+					(digitParameters.exponent <2)
+						? PATTERN.CHIEF
+						: PATTERN.BASE
+				);
+				this.banner.add(this.colors.foreground, PATTERN.BORDURE);
+				return;
+		}
+	}
+}
+
+
+class CistercianNumeralBannerGenerator {
+	
+	/** @property {{[BANNER_SIDE.LEFT]:BannerSpecification, [BANNER_SIDE.RIGHT]:BannerSpecification}} bannerSpecifications */
+	
+	constructor(num, colors){
+		/**
+			@type {number}
+		*/
+		this.num = num;
+		
+		/**
+			@type {ColorScheme}
+		*/
+		this.colors = colors;
+		
+		
+		this.buildBannerSpecifications();
+	}
+	
+	
+	// #region generation
+	//{
+	
+	/**
+		Generates the banner specifications for each side.
+	*/
+	buildBannerSpecifications(){
+		this.bannerSpecifications = {
+			[BANNER_SIDE.LEFT]:  
+				this.generate_patterns_for_one_side(BANNER_SIDE.LEFT),
+			[BANNER_SIDE.RIGHT]: 
+				this.generate_patterns_for_one_side(BANNER_SIDE.RIGHT)
+		};
+	}
+	
+	/**
+		@param {BANNER_SIDE} side
+		@returns {BannerSpecificationBuilder} The generated banner specification.
+	*/
+	generate_patterns_for_one_side(side){
+		const patterns = [];
+		patterns.add = (color, pattern)=>patterns.push(
+			`{pattern:${pattern.toLowerCase()},color:${color.toLowerCase()}}`
+		);
+		
+		// Parameters describing the two digits to make, with A having the larger face-value if they're unequal.
+		const {
+			/** @type {DigitParameters} */ larger:  A,
+			/** @type {DigitParameters} */ smaller: B
+		} = this.getDigitParameters(side);
+		
+		const banner = new BannerSpecificationBuilder();
+		const generatorStateMachine = (
+			new PatternGeneratorStateMachine(A, B, side, this.colors, banner)
+		);
+		generatorStateMachine.START();
+		return banner;
+	}
+	
+	
+	/**
+	Get the parameters describing the two digits to make, with [larger] being the one with the larger face value if they are unequal.
+	@param {BANNER_SIDE} side
+	@return {larger:DigitParameters, smaller:DigitParameters}
+*/
+	getDigitParameters(side){
+		/** 
+			Get the face value of a single digit from a number (base-10).
+			@param {number} exponent The exponent of base-10 for the place value.
+			@return {number} The face value of the digit 0-9.
+		*/
+		const getFaceValueAt = (exponent)=>(Math.floor(this.num / 10 ** exponent) % 10);
+		
+		/** 
+			Get the digit parameters for a single digit. 
+			@param {number} exponent The exponent of base-10 for the place value.
+			@return {DigitParameters}
+		*/
+		const getDigitParametersAt = (exponent)=>({exponent, faceValue:getFaceValueAt(exponent)});
+		
+		/**
+			@type {[DigitParameters,DigitParameters]}
+		*/
+		const digitParameters = (
+			{
+				// left banner is for tens and thousands
+				[BANNER_SIDE.LEFT]:  [getDigitParametersAt(1), getDigitParametersAt(3)],
+				// right banner is for units and hundreds
+				[BANNER_SIDE.RIGHT]: [getDigitParametersAt(0), getDigitParametersAt(2)]
+			}
+			[side]
+		);
+		
+		const [larger, smaller] = digitParameters.sort((a,b)=>-(a.faceValue-b.faceValue)); //sort decending
+		
+		return {larger, smaller};
+	}
+	
+	//}
+	// #endregion generation
+	
+	
+	//# region minecraft commands
+	//{
+
+	/** 
+		@param {BANNER_SIDE} side
+		return {string}
+	*/
+	getCommandGiveBanner(side){
+		const banner = this.bannerSpecifications[side];
+		const item = `minecraft:${banner.baseColor.toLowerCase()}_banner`;
+		const tags = `banner_patterns=${banner.banner_patterns}`;
+		return `/give @p ${item}[${tags}] 1`;
+	}
+
+
+	/** 
+		@param {BANNER_SIDE} side
+		return {string}
+	*/
+	getCommandGiveShield(side){
+		const banner = this.bannerSpecifications[side];
+		const tags = `base_color="${banner.baseColor.toLowerCase()}",banner_patterns=${banner.banner_patterns}`;
+		return `/give @p minecraft:shield[${tags}] 1`;
+	}
+
+
+	/** 
+		@param {BANNER_SIDE} side
+		return {string}
+	*/
+	getCommandSummonArmorStand(side){
+		const banner = this.bannerSpecifications[side];
+		const components = `{base_color:${banner.baseColor.toLowerCase()}, banner_patterns:${banner.banner_patterns}}`;
+		const {equipmentHand,pose,rotation} = (
+			(side == BANNER_SIDE.LEFT)
+				? {
+					equipmentHand:"mainhand",
+					pose:"{RightArm:[270f,315f,0f]}",
+					rotation:"[315f,0f]"
+				}
+				: { // right side banner
+					equipmentHand:"offhand",
+					pose:"{LeftArm:[270f,45f,0f]}",
+					rotation:"[45f,0f]"
+				}
+		);
+		return `/summon minecraft:armor_stand ~ ~ ~ {equipment:{${equipmentHand}:{id:"minecraft:shield",count:1, components:${components}}},ShowArms:1b,Pose:${pose},Rotation:${rotation}}`;
+	}
+
+	//}
+	// # endregion minecraft commands
+}
+
+
+function test(num){
+	if (typeof num === "undefined") { num = 1337; }
+	
+	const colors = {foreground:COLOR.BLACK,background:COLOR.WHITE};
+	
+	const generator = new CistercianNumeralBannerGenerator(num,colors);
+	
+	
+	const logOutputsForSide = (side)=>{
+		console.log(generator.bannerSpecifications[side]);
+		console.log(generator.getCommandGiveBanner(side));
+		console.log(generator.getCommandGiveShield(side));
+		console.log(generator.getCommandSummonArmorStand(side));
+	};
+	
+	console.log(`#banners for ${num}`);
+	console.log("##left:");
+	logOutputsForSide(BANNER_SIDE.LEFT);
+	console.log("##right:");
+	logOutputsForSide(BANNER_SIDE.RIGHT);
+}
+
