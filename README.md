@@ -39,13 +39,11 @@ When the main flowchart tells you to use the auxiliary flowchart, follow the ste
 <details>
 	<summary> Main flowchart </summary>
 	<img alt="Main flowchart" src="flowcharts/cistercian-numerals-main.png">
-	![Main flowchart](./flowcharts/cistercian-numerals-main.png)
 </details>
 
 <details>
 	<summary> Auxiliary flowchart </summary>
 	<img alt="Auxiliary flowchart" src="flowcharts/cistercian-numerals-auxiliary.png">
-	![Auxiliary flowchart](./flowcharts/cistercian-numerals-auxiliary.png)
 </details>
 
 
