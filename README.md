@@ -29,9 +29,7 @@ To use the flow chart, you first need to decide the digits you will make:
 1. Choose a side of the numeral to make:
 	- the hundreds and units
 	- or the thousands and tens.
-2. Choose two digits. Call them digit A and digit B.
-
-	With A being the larger digit, from their digit values, ignoring place value. (eg, for both 2080 and 8020: A=8 and B=2.)
+2. Choose two digits. Call them digit A and digit B.<br>With A being the larger digit, from their digit values, ignoring place value. (eg, for both 2080 and 8020: A=8 and B=2.)
 
 
 Start at the top of the main flowchart.
@@ -40,11 +38,13 @@ When the main flowchart tells you to use the auxiliary flowchart, follow the ste
 
 <details>
 	<summary> Main flowchart </summary>
+	<img alt="Main flowchart" src="flowcharts/cistercian-numerals-main.png">
 	![Main flowchart](./flowcharts/cistercian-numerals-main.png)
 </details>
 
 <details>
 	<summary> Auxiliary flowchart </summary>
+	<img alt="Auxiliary flowchart" src="flowcharts/cistercian-numerals-auxiliary.png">
 	![Auxiliary flowchart](./flowcharts/cistercian-numerals-auxiliary.png)
 </details>
 
