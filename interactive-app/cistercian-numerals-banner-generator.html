@@ -1,0 +1,35 @@
+<html>
+<head>
+
+
+</head>
+<body>
+
+	<form id="generatorForm">
+		<label for="numberInput">Number input:</label>
+		<input id="numberInput" name="numberInput" type="number" value="0" required min="0" max="9999">
+		<button type="submit">Generate banner patterns</button>
+	</form>
+	<pre id="giveCommandLeft">left:</pre>
+	<pre id="giveCommandRight">right:</pre>
+	
+	<script type="module">
+		import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
+		
+		export function updateOutput(e){
+			e.preventDefault();   // stops the POST
+			const num = e.target.numberInput.value;
+			
+			const colors = {foreground:COLOR.BLACK,background:COLOR.WHITE};
+			
+			const generator = new CistercianNumeralBannerGenerator(num,colors);
+			
+			document.getElementById("giveCommandLeft").textContent = `left: \n${generator.getCommandGiveBanner(BANNER_SIDE.LEFT)}`;
+			document.getElementById("giveCommandRight").textContent = `right: \n${generator.getCommandGiveBanner(BANNER_SIDE.RIGHT)}`;
+		}
+		
+		document.getElementById("generatorForm").addEventListener("submit", updateOutput);
+	</script>
+
+</body>
+</html>

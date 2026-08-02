@@ -6,7 +6,7 @@
 	Enum for the names of colors available.
 	@enum{string}
 */
-const COLOR = Object.freeze(
+export const COLOR = Object.freeze(
 	[
 		"WHITE",
 		"ORANGE",
@@ -32,7 +32,7 @@ const COLOR = Object.freeze(
 	Enum for the names of patterns. The values are the name as used in the banner_patterns tag.
 	@enum {string}
 */
-const PATTERN = Object.freeze({
+export const PATTERN = Object.freeze({
 	BASE: "stripe_bottom",
 	BASE_DEXTER_CANTON: "square_bottom_left",
 	BASE_INDENTED: "triangles_bottom",
@@ -58,7 +58,7 @@ const PATTERN = Object.freeze({
 /**
 	@enum{number}
 */
-const BANNER_SIDE = Object.freeze({
+export const BANNER_SIDE = Object.freeze({
 	LEFT: 0,
 	RIGHT: 1,
 });
@@ -572,7 +572,7 @@ class PatternGeneratorStateMachine {
 }
 
 // main class
-class CistercianNumeralBannerGenerator {
+export class CistercianNumeralBannerGenerator {
 	
 	/**
 		@type {{[BANNER_SIDE.LEFT]:BannerSpecificationBuilder, [BANNER_SIDE.RIGHT]:BannerSpecificationBuilder}}
@@ -741,7 +741,7 @@ class CistercianNumeralBannerGenerator {
 }
 
 
-function test(num){
+export function test(num){
 	if (typeof num === "undefined") { num = 1337; }
 	
 	const colors = {foreground:COLOR.BLACK,background:COLOR.WHITE};
