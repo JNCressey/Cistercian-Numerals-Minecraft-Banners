@@ -13,6 +13,14 @@
 			const generator = new CistercianNumeralBannerGenerator(num,colors);
 			
 			/**
+				@param {PATTERN} p
+				@return string
+			*/
+			function patternKeyFromValue(p){
+				return Object.keys(PATTERN).find(k=>PATTERN[k] === p).toLowerCase();
+			}
+			
+			/**
 				@param {BANNER_SIDE} side
 				@return {string}
 			*/
@@ -23,7 +31,7 @@
 					bannerSpecification
 					.patterns
 					.map(({color,pattern}) => 
-						`${color.toLowerCase()} ${pattern.toLowerCase()}`
+						`${color.toLowerCase()} ${patternKeyFromValue(pattern)}`
 					);
 				const stepList = 
 					[
