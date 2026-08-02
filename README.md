@@ -48,3 +48,7 @@ When the main flowchart tells you to use the auxiliary flowchart, follow the ste
 
 
 I used UMLet to draw the flowcharts.
+
+---
+
+*Minecraft is a trademark of Mojang/Microsoft. This site is not affiliated with or endorsed by Mojang or Microsoft.*
