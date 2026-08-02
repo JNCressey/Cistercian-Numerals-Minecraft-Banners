@@ -146,7 +146,10 @@ class BannerSpecificationBuilder {
 }
 
 
-// implementation of the banner patterns flowchart
+/**
+	implementation of the banner patterns flowchart
+	After creation, call START() and the required patterns will be applied to the target banner builder.
+*/
 class PatternGeneratorStateMachine {
 	
 	/**
@@ -166,7 +169,7 @@ class PatternGeneratorStateMachine {
 		@param {DigitParameters} B One of the two numbers to set. The smaller one if they're not equal.
 		@param {BANNER_SIDE} side
 		@param {ColorScheme} colors
-		@param {BannerSpecificationBuilder} banner
+		@param {BannerSpecificationBuilder} banner The target banner builder to apply the patterns to.
 	*/
 	constructor(A, B, side, colors, banner){
 		this.A      = A;
@@ -512,10 +515,13 @@ class PatternGeneratorStateMachine {
 	}
 }
 
-
+// main class
 class CistercianNumeralBannerGenerator {
 	
-	/** @property {{[BANNER_SIDE.LEFT]:BannerSpecification, [BANNER_SIDE.RIGHT]:BannerSpecification}} bannerSpecifications */
+	/**
+		@type {{[BANNER_SIDE.LEFT]:BannerSpecification, [BANNER_SIDE.RIGHT]:BannerSpecification}}
+	*/
+	#bannerSpecifications;
 	
 	constructor(num, colors){
 		/**
@@ -540,11 +546,11 @@ class CistercianNumeralBannerGenerator {
 		Generates the banner specifications for each side.
 	*/
 	buildBannerSpecifications(){
-		this.bannerSpecifications = {
+		this.#bannerSpecifications = {
 			[BANNER_SIDE.LEFT]:  
-				this.generate_patterns_for_one_side(BANNER_SIDE.LEFT),
+				this.#generate_patterns_for_one_side(BANNER_SIDE.LEFT),
 			[BANNER_SIDE.RIGHT]: 
-				this.generate_patterns_for_one_side(BANNER_SIDE.RIGHT)
+				this.#generate_patterns_for_one_side(BANNER_SIDE.RIGHT)
 		};
 	}
 	
@@ -552,7 +558,7 @@ class CistercianNumeralBannerGenerator {
 		@param {BANNER_SIDE} side
 		@returns {BannerSpecificationBuilder} The generated banner specification.
 	*/
-	generate_patterns_for_one_side(side){
+	#generate_patterns_for_one_side(side){
 		const patterns = [];
 		patterns.add = (color, pattern)=>patterns.push(
 			`{pattern:${pattern.toLowerCase()},color:${color.toLowerCase()}}`
@@ -562,7 +568,7 @@ class CistercianNumeralBannerGenerator {
 		const {
 			/** @type {DigitParameters} */ larger:  A,
 			/** @type {DigitParameters} */ smaller: B
-		} = this.getDigitParameters(side);
+		} = this.#getDigitParameters(side);
 		
 		const banner = new BannerSpecificationBuilder();
 		const generatorStateMachine = (
@@ -574,11 +580,11 @@ class CistercianNumeralBannerGenerator {
 	
 	
 	/**
-	Get the parameters describing the two digits to make, with [larger] being the one with the larger face value if they are unequal.
-	@param {BANNER_SIDE} side
-	@return {larger:DigitParameters, smaller:DigitParameters}
-*/
-	getDigitParameters(side){
+		Get the parameters describing the two digits to make, with [larger] being the one with the larger face value if they are unequal.
+		@param {BANNER_SIDE} side
+		@return {larger:DigitParameters, smaller:DigitParameters}
+	*/
+	#getDigitParameters(side){
 		/** 
 			Get the face value of a single digit from a number (base-10).
 			@param {number} exponent The exponent of base-10 for the place value.
@@ -623,7 +629,7 @@ class CistercianNumeralBannerGenerator {
 		return {string}
 	*/
 	getCommandGiveBanner(side){
-		const banner = this.bannerSpecifications[side];
+		const banner = this.#bannerSpecifications[side];
 		const item = `minecraft:${banner.baseColor.toLowerCase()}_banner`;
 		const tags = `banner_patterns=${banner.banner_patterns}`;
 		return `/give @p ${item}[${tags}] 1`;
@@ -635,7 +641,7 @@ class CistercianNumeralBannerGenerator {
 		return {string}
 	*/
 	getCommandGiveShield(side){
-		const banner = this.bannerSpecifications[side];
+		const banner = this.#bannerSpecifications[side];
 		const tags = `base_color="${banner.baseColor.toLowerCase()}",banner_patterns=${banner.banner_patterns}`;
 		return `/give @p minecraft:shield[${tags}] 1`;
 	}
@@ -646,7 +652,7 @@ class CistercianNumeralBannerGenerator {
 		return {string}
 	*/
 	getCommandSummonArmorStand(side){
-		const banner = this.bannerSpecifications[side];
+		const banner = this.#bannerSpecifications[side];
 		const components = `{base_color:${banner.baseColor.toLowerCase()}, banner_patterns:${banner.banner_patterns}}`;
 		const {equipmentHand,pose,rotation} = (
 			(side === BANNER_SIDE.LEFT)
@@ -678,7 +684,6 @@ function test(num){
 	
 	
 	const logOutputsForSide = (side)=>{
-		console.log(generator.bannerSpecifications[side]);
 		console.log(generator.getCommandGiveBanner(side));
 		console.log(generator.getCommandGiveShield(side));
 		console.log(generator.getCommandSummonArmorStand(side));
