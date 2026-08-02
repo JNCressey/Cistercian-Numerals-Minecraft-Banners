@@ -146,7 +146,7 @@ class BannerSpecificationBuilder {
 }
 
 
-// implementation of the main flowchart
+// implementation of the banner patterns flowchart
 class PatternGeneratorStateMachine {
 	
 	/**
@@ -176,27 +176,13 @@ class PatternGeneratorStateMachine {
 		this.banner = banner;
 	}
 	
-	
-	/**
-		Run the auxiliary flowchart with a single specified digit.
-		@param {DigitParameters} digitParameters
-	*/
-	runAuxiliaryFlowchartWith(digitParameters){
-		this.applyCorePatternOfSingleDigit(digitParameters);
-		/***
-		applyCorePatternOfSingleDigit(
-			digitParameters, 
-			this.side, this.colors, this.banner);
-		*/
-	}
-	
-	
+	// implementation of the main flowchart
 	// #region states
 	//{
 	
 	// entry point for the flowchart.
 	START(){
-		if (this.A.faceValue!=3 && this.B.faceValue!=3){
+		if (this.A.faceValue!==3 && this.B.faceValue!==3){
 			switch(this.A.faceValue){
 				case 8:
 				case 9:
@@ -209,7 +195,7 @@ class PatternGeneratorStateMachine {
 									? PATTERN.PER_FESS 
 									: PATTERN.PER_FESS_INVERTED
 							);
-							if(this.A.faceValue==8){
+							if(this.A.faceValue===8){
 								this.banner.add(
 									this.colors.foreground,
 									PATTERN.BORDURE
@@ -219,7 +205,7 @@ class PatternGeneratorStateMachine {
 								this.runAuxiliaryFlowchartWith(this.A);
 								this.banner.add(
 									this.colors.foreground,
-									(this.B.exponent &1==0)
+									(this.side===BANNER_SIDE.RIGHT)
 										? PATTERN.PALE_SININSTER
 										: PATTERN.PALE_DEXTER
 								);
@@ -228,7 +214,7 @@ class PatternGeneratorStateMachine {
 							
 						case 8:
 						case 9:
-							if (this.A.faceValue==this.B.faceValue){
+							if (this.A.faceValue===this.B.faceValue){
 								this.banner.add(
 									this.colors.background,
 									(this.B.exponent <2)
@@ -258,14 +244,14 @@ class PatternGeneratorStateMachine {
 			);
 			// the two digits, with at least C being a 3.
 			[this.C,this.D] = (
-				(this.A.faceValue==3) 
+				(this.A.faceValue===3) 
 					? [this.A, this.B] 
 					: [this.B, this.A]);
 			switch(this.D.faceValue){
 				case 3:
 					this.banner.add(
 						this.colors.background,
-						(this.side == BANNER_SIDE.RIGHT) 
+						(this.side === BANNER_SIDE.RIGHT) 
 							? PATTERN.PER_PALE 
 							: PATTERN.PER_PALE_INVERTED
 					);
@@ -420,7 +406,7 @@ class PatternGeneratorStateMachine {
 	/**
 		@param {DigitParameters} digitParameters One of the two numbers to set. This subroutine only depends on a singular digit, the caller choses which to pass to this argument.
 	*/
-	applyCorePatternOfSingleDigit(digitParameters){
+	runAuxiliaryFlowchartWith(digitParameters){
 		switch (digitParameters.faceValue){
 			case 0:
 				// core part of 0 is to leave pattern blank
@@ -663,7 +649,7 @@ class CistercianNumeralBannerGenerator {
 		const banner = this.bannerSpecifications[side];
 		const components = `{base_color:${banner.baseColor.toLowerCase()}, banner_patterns:${banner.banner_patterns}}`;
 		const {equipmentHand,pose,rotation} = (
-			(side == BANNER_SIDE.LEFT)
+			(side === BANNER_SIDE.LEFT)
 				? {
 					equipmentHand:"mainhand",
 					pose:"{RightArm:[270f,315f,0f]}",
