@@ -77,12 +77,15 @@ const BANNER_SIDE = Object.freeze({
 	@property {COLOR} background
 */
 
+/**
+	@typedef {Array.<{pattern:PATTERN,color:COLOR}>} patternsArray
+*/
 
 /**
 	The banner color and the banner_patterns tag.
 	@typedef {Object} BannerSpecification
 	@property {COLOR} baseColor
-	@property {BannerSpecificationBuilder} banner_patterns
+	@property {patternsArray} patterns
 */
 
 
@@ -101,7 +104,7 @@ const BANNER_SIDE = Object.freeze({
 */
 class BannerSpecificationBuilder {
 	/**
-		@type {array.<string>}
+		@type {patternsArray}
 		The pattern elements 
 	*/
 	#patterns = [];
@@ -127,8 +130,10 @@ class BannerSpecificationBuilder {
 			throw "baseColor is write-once";
 		}
 		this.#baseColor = color;
-		return this;
+		
+		return this; //for chaining
 	};
+	
 	
 	/**
 		Add a pattern to the banner.
@@ -138,9 +143,10 @@ class BannerSpecificationBuilder {
 	*/
 	add(patternColor, patternShape){
 		this.#patterns.push(
-			`{pattern:${patternShape.toLowerCase()},color:${patternColor.toLowerCase()}}`
+			{pattern:patternShape, color:patternColor}
 		);
-		return this;
+		
+		return this; //for chaining
 	}
 	
 	//}
@@ -149,7 +155,18 @@ class BannerSpecificationBuilder {
 	
 	// #region getters
 	//{
-		
+	
+	/**
+		@type {BannerSpecification}
+	*/
+	get bannerSpecification(){
+		return {
+			baseColor: this.#baseColor,
+			patterns: this.#patterns
+		};
+	}
+	
+	
 	get baseColor(){
 		if (typeof this.#baseColor === "undefined"){
 			throw "baseColor accessed before setting";
@@ -157,11 +174,19 @@ class BannerSpecificationBuilder {
 		return this.#baseColor;
 	}
 	
+	
 	/**
 		@type {string} The value for the banner_patterns tag.
 	*/
 	get banner_patterns(){
-		return `[${this.#patterns.join(",")}]`;
+		const tagBody = (
+			this.#patterns
+				.map(
+					({pattern,color}) => `{pattern:${pattern.toLowerCase()},color:${color.toLowerCase()}}`
+				)
+				.join(",")
+		);
+		return `[${tagBody}]`;
 	}
 	
 	//}
@@ -652,6 +677,16 @@ class CistercianNumeralBannerGenerator {
 	// #endregion generation
 	
 	
+	/**
+		@param {BANNER_SIDE} side
+		@return {BannerSpecification}
+	*/
+	getBannerSpecification(side){
+		const banner = this.#bannerSpecifications[side];
+		return banner.bannerSpecification;
+	}
+	
+	
 	//# region minecraft commands
 	//{
 
@@ -715,6 +750,7 @@ function test(num){
 	
 	
 	const logOutputsForSide = (side)=>{
+		console.log(generator.getBannerSpecification(side));
 		console.log(generator.getCommandGiveBanner(side));
 		console.log(generator.getCommandGiveShield(side));
 		console.log(generator.getCommandSummonArmorStand(side));
