@@ -100,49 +100,72 @@ const BANNER_SIDE = Object.freeze({
 	The banner color and the banner_patterns tag.
 */
 class BannerSpecificationBuilder {
-	constructor(){
-		/**
-			@type {array.<string>}
-			The pattern elements 
-		*/
-		this._patterns = [];
-	}
+	/**
+		@type {array.<string>}
+		The pattern elements 
+	*/
+	#patterns = [];
+	
+	
 	/**
 		@type {COLOR}
-		The base color of the banner. May be set only once.
+		The base color of the banner. May be set only once. 
 	*/
-	get baseColor(){
-		if (typeof this._baseColor === "undefined"){
-			throw "baseColor accessed before setting";
-		}
-		return this._baseColor;
-	}
+	#baseColor;
 	
-	set baseColor(color){
-		if (typeof this._baseColor !== "undefined"){
-			throw "baseColor is write-once";
-		}
-		this._baseColor = color;
-	};
+	
+	// #region fluent setters
+	//{
 	
 	/**
-		@type {string} The value for the banner_patterns tag.
+		Set the base color of the banner. May be set only once.
+		@param {COLOR} color
+		@return {BannerSpecificationBuilder} this for chaining.
 	*/
-	get banner_patterns(){
-		return `[${this._patterns.join(",")}]`;
-	}
+	setBaseColor(color){
+		if (typeof this.#baseColor !== "undefined"){
+			throw "baseColor is write-once";
+		}
+		this.#baseColor = color;
+		return this;
+	};
 	
 	/**
 		Add a pattern to the banner.
 		@param {COLOR} patternColor
 		@param {PATTERN} patternShape
+		@return {BannerSpecificationBuilder} this for chaining.
 	*/
 	add(patternColor, patternShape){
-		this._patterns.push(
-		`{pattern:${patternShape.toLowerCase()},color:${patternColor.toLowerCase()}}`
-	);
+		this.#patterns.push(
+			`{pattern:${patternShape.toLowerCase()},color:${patternColor.toLowerCase()}}`
+		);
+		return this;
 	}
 	
+	//}
+	// #endregion
+	
+	
+	// #region getters
+	//{
+		
+	get baseColor(){
+		if (typeof this.#baseColor === "undefined"){
+			throw "baseColor accessed before setting";
+		}
+		return this.#baseColor;
+	}
+	
+	/**
+		@type {string} The value for the banner_patterns tag.
+	*/
+	get banner_patterns(){
+		return `[${this.#patterns.join(",")}]`;
+	}
+	
+	//}
+	// #endregion getters
 }
 
 
@@ -189,7 +212,7 @@ class PatternGeneratorStateMachine {
 			switch(this.A.faceValue){
 				case 8:
 				case 9:
-					this.banner.baseColor = this.colors.foreground;
+					this.banner.setBaseColor(this.colors.foreground);
 					switch(this.B.faceValue){
 						case 7:
 							this.banner.add(
@@ -236,15 +259,16 @@ class PatternGeneratorStateMachine {
 					}
 					
 				default: // A<8
-					this.banner.baseColor = this.colors.background;
+					this.banner.setBaseColor(this.colors.background);
 					return this.COLLECTION_1();
 			}
 		} else { // at least one of the values is 3
-			this.banner.baseColor=this.colors.foreground;
-			this.banner.add(
-				this.colors.background,
-				PATTERN.LOZENGE
-			);
+			this.banner
+				.setBaseColor(this.colors.foreground)
+				.add(
+					this.colors.background,
+					PATTERN.LOZENGE
+				);
 			// the two digits, with at least C being a 3.
 			[this.C,this.D] = (
 				(this.A.faceValue===3) 
@@ -252,20 +276,21 @@ class PatternGeneratorStateMachine {
 					: [this.B, this.A]);
 			switch(this.D.faceValue){
 				case 3:
-					this.banner.add(
-						this.colors.background,
-						(this.side === BANNER_SIDE.RIGHT) 
-							? PATTERN.PER_PALE 
-							: PATTERN.PER_PALE_INVERTED
-					);
-					this.banner.add(
-						this.colors.foreground,
-						PATTERN.CHIEF_INDENTED
-					);
-					this.banner.add(
-						this.colors.foreground,
-						PATTERN.BASE_INDENTED
-					);
+					this.banner
+						.add(
+							this.colors.background,
+							(this.side === BANNER_SIDE.RIGHT) 
+								? PATTERN.PER_PALE 
+								: PATTERN.PER_PALE_INVERTED
+						)
+						.add(
+							this.colors.foreground,
+							PATTERN.CHIEF_INDENTED
+						)
+						.add(
+							this.colors.foreground,
+							PATTERN.BASE_INDENTED
+						);
 					return this.COLLECTION_5();
 					
 				case 2:
@@ -280,18 +305,19 @@ class PatternGeneratorStateMachine {
 				case 0:
 				case 1:
 				case 5:
-					this.banner.add(
-						this.colors.background,
-						(this.side === BANNER_SIDE.RIGHT) 
-							? PATTERN.PER_PALE 
-							: PATTERN.PER_PALE_INVERTED
-					);
-					this.banner.add(
-						this.colors.foreground,
-						(this.C.exponent <2)
-							? PATTERN.CHIEF_INDENTED
-							: PATTERN.BASE_INDENTED
-					);
+					this.banner
+						.add(
+							this.colors.background,
+							(this.side === BANNER_SIDE.RIGHT) 
+								? PATTERN.PER_PALE 
+								: PATTERN.PER_PALE_INVERTED
+						)
+						.add(
+							this.colors.foreground,
+							(this.C.exponent <2)
+								? PATTERN.CHIEF_INDENTED
+								: PATTERN.BASE_INDENTED
+						);
 					return this.COLLECTION_4();
 			}
 		}
@@ -425,38 +451,40 @@ class PatternGeneratorStateMachine {
 				return;
 			
 			case 2:
-				this.banner.add(
-					this.colors.foreground,
-					(digitParameters.exponent <2)
-						? PATTERN.PER_FESS
-						: PATTERN.PER_FESS_INVERTED
-				);
-				this.banner.add(
-					this.colors.background,
-					(digitParameters.exponent <2)
-						? PATTERN.CHIEF
-						: PATTERN.BASE
-				);
+				this.banner
+					.add(
+						this.colors.foreground,
+						(digitParameters.exponent <2)
+							? PATTERN.PER_FESS
+							: PATTERN.PER_FESS_INVERTED
+					)
+					.add(
+						this.colors.background,
+						(digitParameters.exponent <2)
+							? PATTERN.CHIEF
+							: PATTERN.BASE
+					);
 				return;
 			
 			// this subroutine is never called for 3
 			
 			case 4:
-				this.banner.add(
-					this.colors.foreground,
-					(digitParameters.exponent <2)
-						? PATTERN.INVERTED_CHEVRON
-						: PATTERN.CHEVRON
-				);
-				this.banner.add(
-					this.colors.background,
-					[
-						PATTERN.CHIEF_DEXTER_CANTON,
-						PATTERN.CHIEF_SINISTER_CANTON,
-						PATTERN.BASE_DEXTER_CANTON,
-						PATTERN.BASE_SINSITER_CANTON,
-					][digitParameters.exponent]
-				);
+				this.banner
+					.add(
+						this.colors.foreground,
+						(digitParameters.exponent <2)
+							? PATTERN.INVERTED_CHEVRON
+							: PATTERN.CHEVRON
+					)
+					.add(
+						this.colors.background,
+						[
+							PATTERN.CHIEF_DEXTER_CANTON,
+							PATTERN.CHIEF_SINISTER_CANTON,
+							PATTERN.BASE_DEXTER_CANTON,
+							PATTERN.BASE_SINSITER_CANTON,
+						][digitParameters.exponent]
+					);
 				return;
 			
 			case 5:
@@ -478,38 +506,41 @@ class PatternGeneratorStateMachine {
 				return;
 			
 			case 7:
-				this.banner.add(this.colors.foreground, PATTERN.BORDURE);
-				this.banner.add(
-					this.colors.foreground,
-					(this.side === BANNER_SIDE.RIGHT)
-						? PATTERN.PALE_SININSTER
-						: PATTERN.PALE_DEXTER
-				);
+				this.banner
+					.add(this.colors.foreground, PATTERN.BORDURE)
+					.add(
+						this.colors.foreground,
+						(this.side === BANNER_SIDE.RIGHT)
+							? PATTERN.PALE_SININSTER
+							: PATTERN.PALE_DEXTER
+					);
 				return;
 			
 			case 8:
-				this.banner.add(
-					this.colors.background,
-					(digitParameters.exponent <2)
-						? PATTERN.CHIEF
-						: PATTERN.BASE
-				);
-				this.banner.add(
-					this.colors.foreground,
-					(this.side === BANNER_SIDE.RIGHT)
-						? PATTERN.PALE_SININSTER
-						: PATTERN.PALE_DEXTER
-				);
+				this.banner
+					.add(
+						this.colors.background,
+						(digitParameters.exponent <2)
+							? PATTERN.CHIEF
+							: PATTERN.BASE
+					)
+					.add(
+						this.colors.foreground,
+						(this.side === BANNER_SIDE.RIGHT)
+							? PATTERN.PALE_SININSTER
+							: PATTERN.PALE_DEXTER
+					);
 				return;
 			
 			case 9:
-				this.banner.add(
-					this.colors.background,
-					(digitParameters.exponent <2)
-						? PATTERN.CHIEF
-						: PATTERN.BASE
-				);
-				this.banner.add(this.colors.foreground, PATTERN.BORDURE);
+				this.banner
+					.add(
+						this.colors.background,
+						(digitParameters.exponent <2)
+							? PATTERN.CHIEF
+							: PATTERN.BASE
+					)
+					.add(this.colors.foreground, PATTERN.BORDURE);
 				return;
 		}
 	}
@@ -519,7 +550,7 @@ class PatternGeneratorStateMachine {
 class CistercianNumeralBannerGenerator {
 	
 	/**
-		@type {{[BANNER_SIDE.LEFT]:BannerSpecification, [BANNER_SIDE.RIGHT]:BannerSpecification}}
+		@type {{[BANNER_SIDE.LEFT]:BannerSpecificationBuilder, [BANNER_SIDE.RIGHT]:BannerSpecificationBuilder}}
 	*/
 	#bannerSpecifications;
 	
