@@ -24,8 +24,31 @@
 			
 			const generator = new CistercianNumeralBannerGenerator(num,colors);
 			
-			document.getElementById("giveCommandLeft").textContent = `left: \n${generator.getCommandGiveBanner(BANNER_SIDE.LEFT)}`;
-			document.getElementById("giveCommandRight").textContent = `right: \n${generator.getCommandGiveBanner(BANNER_SIDE.RIGHT)}`;
+			/**
+				@param {BANNER_SIDE} side
+				@return {string}
+			*/
+			function output(side){
+				const giveCommand = generator.getCommandGiveBanner(side);
+				const bannerSpecification = generator.getBannerSpecification(side);
+				const patternSteps = 
+					bannerSpecification
+					.patterns
+					.map(({color,pattern}) => 
+						`${color.toLowerCase()} ${pattern.toLowerCase()}`
+					);
+				const stepList = 
+					[
+						`${bannerSpecification.baseColor.toLowerCase()} banner`,
+						...patternSteps
+					]
+					.map(i=>`- ${i}`)
+					.join("\n");
+				return `give command:\n${giveCommand}\n\nSteps:\n${stepList}`;
+			}
+			
+			document.getElementById("giveCommandLeft").textContent = `#left \n${output(BANNER_SIDE.LEFT)}`;
+			document.getElementById("giveCommandRight").textContent = `#right \n${output(BANNER_SIDE.RIGHT)}`;
 		}
 		
 		document.getElementById("generatorForm").addEventListener("submit", updateOutput);
