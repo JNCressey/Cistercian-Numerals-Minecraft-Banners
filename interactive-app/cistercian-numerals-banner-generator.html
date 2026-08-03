@@ -3,7 +3,17 @@
 	<script type="module" src="./cistercian-numerals-banner-generator-frontend.js"></script>
 	
 	<style>
-	  html.no-js .js-only { display: none; }
+		html.no-js .js-only { display: none; }
+		
+		#generatorWidget {
+			border: 1px solid #aaa;
+			padding: 0.5em;
+			border-radius: 4px;
+		}
+		
+		#outputLeft, #outputRight {
+			overflow:scroll;
+		}
 	</style>
 	<script>
 		document.documentElement.classList.remove("no-js");
@@ -17,23 +27,28 @@
 		The interactive generator requires Javascript enabled to work.
 	</noscript>
 	
-	<form id="generatorForm" class="js-only">
-		<label for="numberInput">Number Input:</label>
-		<input id="numberInput" name="numberInput" type="number" value="0" required min="0" max="9999">
-		<br>
+	<div id="generatorWidget" calss="js-only">
+		<h2>Interactive Generator</h2>
 		
-		<label> Background Colour:</label>
-		<select id="backgroundColor" name="backgroundColor"></select>
-		<br>
-		
-		<label>Foreground Colour:</label>
-		<select id="foregroundColor" name="foregroundColor"></select>
-		<br>
-		
-		<button type="submit">Generate banner patterns</button>
-	</form>
-	<pre id="outputLeft" class="js-only">left:</pre>
-	<pre id="outputRight" class="js-only">right:</pre>
+		<form id="generatorForm">
+			<label for="numberInput">Number Input:</label>
+			<input id="numberInput" name="numberInput" type="number" value="0" required min="0" max="9999">
+			<br>
+			
+			<label> Background Colour:</label>
+			<select id="backgroundColor" name="backgroundColor"></select>
+			<br>
+			
+			<label>Foreground Colour:</label>
+			<select id="foregroundColor" name="foregroundColor"></select>
+			<br>
+			
+			<button type="submit">Generate banner patterns</button>
+		</form>
+		<pre id="outputLeft" class="js-only">left:</pre>
+		<pre id="outputRight" class="js-only">right:</pre>
+	
+	</details>
 	
 </body>
 </html>

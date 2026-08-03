@@ -1,5 +1,6 @@
 import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
 
+
 /*
 	assume the frontend html document has
 		- <form id="generatorForm"> with inputs:
@@ -10,16 +11,14 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 		- <pre id="outputRight">
 			
 */
-		
+
+
 function toTitleCase(str) {
 	return str
 		.toLowerCase()
 		.replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function indent(str) {
-	return str.replace(/^/gm, "\t");
-}
 
 function updateOutput(e){
 	e.preventDefault();   // stops the POST
@@ -66,9 +65,10 @@ function updateOutput(e){
 		return `Give command:\n${giveCommand}\n\nSteps:\n${stepList}`;
 	}
 	
-	document.getElementById("outputLeft").textContent = `# Left \n${indent(output(BANNER_SIDE.LEFT))}`;
-	document.getElementById("outputRight").textContent = `# Right \n${indent(output(BANNER_SIDE.RIGHT))}`;
+	document.getElementById("outputLeft").textContent = `# Left \n${output(BANNER_SIDE.LEFT)}`;
+	document.getElementById("outputRight").textContent = `# Right \n${output(BANNER_SIDE.RIGHT)}`;
 }
+
 
 /**
 	add the color options to a select element and set the default value.
@@ -81,6 +81,7 @@ function addColorOptionsToSelect(selectEl, defaultValue){
 	}
 	selectEl.value = defaultValue;
 }
+
 
 addColorOptionsToSelect(document.getElementById("foregroundColor"), COLOR.BLACK);
 addColorOptionsToSelect(document.getElementById("backgroundColor"), COLOR.WHITE);
