@@ -85,7 +85,11 @@ function addColorOptionsToSelect(selectEl, defaultValue){
 	selectEl.value = defaultValue;
 }
 
-
+document.querySelectorAll('#generatorForm :disabled').forEach(function(el) {
+	console.log(el);
+	el.disabled = false;
+});
+document.getElementById("numberInput").value="";
 addColorOptionsToSelect(document.getElementById("foregroundColor"), COLOR.BLACK);
 addColorOptionsToSelect(document.getElementById("backgroundColor"), COLOR.WHITE);
 document.getElementById("generatorForm").addEventListener("submit", updateOutput);

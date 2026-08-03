@@ -1,9 +1,8 @@
-<html class="no-js">
+<html>
 <head>
 	<script type="module" src="./cistercian-numerals-banner-generator-frontend.js"></script>
 	
 	<style>
-		html.no-js .js-only { display: none; }
 		
 		#generatorWidget {
 			border: 1px solid #aaa;
@@ -15,39 +14,64 @@
 			overflow:scroll;
 		}
 	</style>
-	<script>
-		document.documentElement.classList.remove("no-js");
-	</script>
 	
 </head>
 <body>
 
 
-	<noscript>
-		The interactive generator requires Javascript enabled to work.
-	</noscript>
 	
-	<div id="generatorWidget" calss="js-only">
+	<div id="generatorWidget">
 		<h2>Interactive Generator</h2>
+		
+		<noscript>
+			<p>The interactive generator requires Javascript enabled to work.</p>
+		</noscript>
 		
 		<form id="generatorForm">
 			<label for="numberInput">Number Input:</label>
-			<input id="numberInput" name="numberInput" type="number" required min="0" max="9999">
+			<input id="numberInput" name="numberInput" type="number" required min="0" max="9999" value="2026" disabled>
 			<br>
 			
 			<label> Background Colour:</label>
-			<select id="backgroundColor" name="backgroundColor" required></select>
+			<select id="backgroundColor" name="backgroundColor" required disabled>
+				<noscript><option value="WHITE">White</option></noscript>
+			</select>
 			<br>
 			
 			<label>Foreground Colour:</label>
-			<select id="foregroundColor" name="foregroundColor" required></select>
+			<select id="foregroundColor" name="foregroundColor" required disabled>
+				<noscript><option value="BLACK" >Black</option></noscript>
+			</select>
 			<br>
 			
-			<button type="submit">Generate banner patterns</button>
+			<button type="submit" disabled>Generate banner patterns</button>
 		</form>
-		<pre id="outputNumeralDetails"></pre>
-		<pre id="outputLeft" class="js-only"></pre>
-		<pre id="outputRight" class="js-only"></pre>
+		
+		<pre id="outputNumeralDetails"><noscript># For number 2026</noscript></pre>
+		
+		<pre id="outputLeft"><noscript>## Left 
+Give command:
+/give @p minecraft:white_banner[banner_patterns=[{pattern:half_horizontal,color:black},{pattern:stripe_top,color:white},{pattern:half_horizontal_bottom,color:black},{pattern:stripe_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_right,color:black}]] 1
+
+Steps:
+- White Banner
+- Black Per_fess
+- White Chief
+- Black Per_fess_inverted
+- White Base
+- White Fess
+- Black Pale_sininster</noscript></pre>
+
+		<pre id="outputRight"><noscript>## Right 
+Give command:
+/give @p minecraft:white_banner[banner_patterns=[{pattern:stripe_right,color:black},{pattern:half_horizontal_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_left,color:black}]] 1
+
+Steps:
+- White Banner
+- Black Pale_sininster
+- White Per_fess_inverted
+- White Fess
+- Black Pale_dexter</noscript></pre>
 	
 	</details>
 	
