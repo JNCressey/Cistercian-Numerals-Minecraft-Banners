@@ -4,9 +4,9 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 /*
 	assume the frontend html document has
 		- <form id="generatorForm"> with inputs:
-			- "numberInput"
-			- "foregroundColor"
-			- "backgroundColor"
+			- number "numberInput"
+			- select "foregroundColor"
+			- select "backgroundColor"
 		- <pre id="outputNumeralDetails">
 		- <pre id="outputLeft">
 		- <pre id="outputRight">
