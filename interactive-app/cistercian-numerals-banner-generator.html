@@ -1,11 +1,23 @@
-<html>
+<html class="no-js">
 <head>
 	<script type="module" src="./cistercian-numerals-banner-generator-frontend.js"></script>
+	
+	<style>
+	  html.no-js .js-only { display: none; }
+	</style>
+	<script>
+		document.documentElement.classList.remove("no-js");
+	</script>
 	
 </head>
 <body>
 
-	<form id="generatorForm">
+
+	<noscript>
+		The interactive generator requires Javascript enabled to work.
+	</noscript>
+	
+	<form id="generatorForm" class="js-only">
 		<label for="numberInput">Number input:</label>
 		<input id="numberInput" name="numberInput" type="number" value="0" required min="0" max="9999">
 		<br>
@@ -20,8 +32,8 @@
 		
 		<button type="submit">Generate banner patterns</button>
 	</form>
-	<pre id="outputLeft">left:</pre>
-	<pre id="outputRight">right:</pre>
+	<pre id="outputLeft" class="js-only">left:</pre>
+	<pre id="outputRight" class="js-only">right:</pre>
 	
 </body>
 </html>
