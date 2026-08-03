@@ -3,8 +3,6 @@
 	<script type="module" src="./cistercian-numerals-banner-generator-frontend.js"></script>
 	
 	<style>
-		html.no-js .js-only { display: none; }
-		
 		#generatorWidget {
 			border: 1px solid #aaa;
 			padding: 0.5em;
@@ -15,9 +13,6 @@
 			overflow:scroll;
 		}
 	</style>
-	<script>
-		document.documentElement.classList.remove("no-js");
-	</script>
 	
 </head>
 <body>
@@ -27,10 +22,10 @@
 		The interactive generator requires Javascript enabled to work.
 	</noscript>
 	
-	<div id="generatorWidget" calss="js-only">
+	<div id="generatorWidget">
 		<h2>Interactive Generator</h2>
 		
-		<form id="generatorForm">
+		<form id="generatorForm" method="GET">
 			<label for="numberInput">Number Input:</label>
 			<input id="numberInput" name="numberInput" type="number" required min="0" max="9999">
 			<br>
