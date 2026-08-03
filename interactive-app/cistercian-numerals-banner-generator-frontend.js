@@ -20,6 +20,67 @@ function toTitleCase(str) {
 		.replace(/\b\w/g, c => c.toUpperCase());
 }
 
+/**
+	add the required crafting steps to the crafting list.
+	@param {import("./cistercian-numerals-banner-generator.js").BannerSpecification} bannerSpecification
+	@param {HTMLOListElement} craftingList The target list to add the steps to.
+*/
+function outputCraftingSteps(bannerSpecification, craftingList){
+	craftingList.replaceChildren(); // Removes all child nodes
+	
+	{ // base banner
+		const baseBannerLi = document.createElement("li");
+		{
+			const bannerName = document.createElement("span");
+			bannerName.textContent = `${toTitleCase(bannerSpecification.baseColor)} Banner`;
+			baseBannerLi.append(bannerName);
+		}
+		{
+			const bannerImage = document.createElement("img");
+			bannerImage.src = `./icons/${bannerSpecification.baseColor}-banner.png`;
+			baseBannerLi.append(bannerImage);
+			
+		}
+		craftingList.append(baseBannerLi);
+	}
+	
+	
+	bannerSpecification.patterns.forEach(({pattern,color}) => {
+		const craftStepLi = document.createElement("li");
+		{
+			const dyeColor = document.createElement("span");
+			dyeColor.textContent = `${toTitleCase(color)} Dye`;
+			craftStepLi.append(dyeColor);
+		}
+		{
+			const dyeImage = document.createElement("img");
+			dyeImage.src = `./icons/${color}-dye.png`;
+			craftStepLi.append(dyeImage);
+			
+		}
+		{
+			const patternName = document.createElement("span");
+			patternName.textContent = `${toTitleCase(patternKeyFromValue(pattern))}`;
+			craftStepLi.append(patternName);
+		}
+		{
+			const patternImage = document.createElement("img");
+			patternImage.src = `./icons/${pattern}.png`;
+			craftStepLi.append(patternImage);
+			
+		}
+		craftingList.append(craftStepLi);
+	});
+}
+
+/**
+	@param {PATTERN} p
+	@return string
+*/
+function patternKeyFromValue(p){
+	return Object.keys(PATTERN).find(k=>PATTERN[k] === p);
+}
+	
 
 function updateOutput(e){
 	e.preventDefault();   // stops the POST
@@ -36,18 +97,10 @@ function updateOutput(e){
 	const generator = new CistercianNumeralBannerGenerator(num,colors);
 	
 	/**
-		@param {PATTERN} p
-		@return string
-	*/
-	function patternKeyFromValue(p){
-		return Object.keys(PATTERN).find(k=>PATTERN[k] === p);
-	}
-	
-	/**
 		@param {BANNER_SIDE} side
 		@return {string}
 	*/
-	function output(side){
+	function preOutput(side){
 		const giveCommand = generator.getCommandGiveBanner(side);
 		const bannerSpecification = generator.getBannerSpecification(side);
 		const patternSteps = 
@@ -65,11 +118,25 @@ function updateOutput(e){
 			.join("\n");
 		return `Give command:\n${giveCommand}\n\nSteps:\n${stepList}`;
 	}
-	
-	
 	document.getElementById("outputNumeralDetails").textContent = `# For number ${num}`;
-	document.getElementById("outputLeft").textContent = `## Left \n${output(BANNER_SIDE.LEFT)}`;
-	document.getElementById("outputRight").textContent = `## Right \n${output(BANNER_SIDE.RIGHT)}`;
+	document.getElementById("outputLeft").textContent = `## Left \n${preOutput(BANNER_SIDE.LEFT)}`;
+	document.getElementById("outputRight").textContent = `## Right \n${preOutput(BANNER_SIDE.RIGHT)}`;
+	
+	
+	/**
+		@param {BANNER_SIDE} side
+	*/
+	function listElementsOutput(side){
+		const outputListId = {
+			[BANNER_SIDE.LEFT]:  "outputListLeft",
+			[BANNER_SIDE.RIGHT]: "outputListRight"
+		}[side];
+		const bannerSpecification = generator.getBannerSpecification(side);
+		const craftingList = document.getElementById(outputListId);
+		outputCraftingSteps(bannerSpecification, craftingList);
+	}
+	listElementsOutput(BANNER_SIDE.LEFT);
+	listElementsOutput(BANNER_SIDE.RIGHT);
 }
 
 
