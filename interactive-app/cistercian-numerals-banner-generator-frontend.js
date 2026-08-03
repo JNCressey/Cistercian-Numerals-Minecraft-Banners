@@ -7,6 +7,7 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 			- "numberInput"
 			- "foregroundColor"
 			- "backgroundColor"
+		- <pre id="outputNumeralDetails">
 		- <pre id="outputLeft">
 		- <pre id="outputRight">
 			
@@ -65,8 +66,10 @@ function updateOutput(e){
 		return `Give command:\n${giveCommand}\n\nSteps:\n${stepList}`;
 	}
 	
-	document.getElementById("outputLeft").textContent = `# Left \n${output(BANNER_SIDE.LEFT)}`;
-	document.getElementById("outputRight").textContent = `# Right \n${output(BANNER_SIDE.RIGHT)}`;
+	
+	document.getElementById("outputNumeralDetails").textContent = `# For number ${num}`;
+	document.getElementById("outputLeft").textContent = `## Left \n${output(BANNER_SIDE.LEFT)}`;
+	document.getElementById("outputRight").textContent = `## Right \n${output(BANNER_SIDE.RIGHT)}`;
 }
 
 
