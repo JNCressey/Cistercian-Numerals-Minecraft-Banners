@@ -77,6 +77,11 @@ function outputSide(num, generator, side){
 		outputSideHeading(num, side, headingEl);
 	}
 	
+	{ // banner preview
+		const bannerPreview = document.querySelector(`#${outputSectionId} .bannerPreview`);
+		outputBannerPreview(generator,side,bannerPreview);
+	}
+	
 	{ // give command
 		const giveCommandOutputArea = document.querySelector(`#${outputSectionId} .giveCommand`);
 		outputGiveCommand(generator, side, giveCommandOutputArea);
@@ -102,6 +107,28 @@ function outputSideHeading(num, side, headingEl){
 	headingEl.textContent=`${toTitleCase(objectKeyFromValue(BANNER_SIDE,side))} Banner: ${partialNum}`;
 }
 
+
+/**
+	add the required crafting steps to the crafting list.
+	@param {CistercianNumeralBannerGenerator} generator
+	@param {BANNER_SIDE} side
+	@param {HTMLImgElement} bannerPreview The target img to change the src of.
+*/
+function outputBannerPreview(generator,side,bannerPreview){
+	const bannerSpecification = generator.getBannerSpecification(side);
+	let urlParams = "";
+	
+	urlParams += `baseColor=${bannerSpecification.baseColor.toLowerCase()}`;
+	
+	bannerSpecification.patterns.forEach(({pattern,color},i)=>{
+		const stepNumber = i+1;
+		urlParams += `&pattern${stepNumber}=${pattern}&color${stepNumber}=${color.toLowerCase()}`
+	});
+	
+	//const bannerSpecificationURLEncoded = encodeURIComponent(JSON.stringify(bannerSpecification));
+	//bannerPreview.src = `./banner.svg?bannerSpecification=${bannerSpecificationURLEncoded}`;
+	bannerPreview.src = `./banner.svg?${urlParams}`;
+}
 
 /**
 	add the required crafting steps to the crafting list.
