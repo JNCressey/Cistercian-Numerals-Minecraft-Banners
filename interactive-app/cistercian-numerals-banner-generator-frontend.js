@@ -67,7 +67,7 @@ function outputSide(num, generator, side){
 	}[side];
 	
 	{ // heading
-		const headingEl = document.querySelector(`#${outputSectionId} h4`);
+		const headingEl = document.querySelector(`#${outputSectionId} .bannerSideHeading`);
 		outputSideHeading(num, side, headingEl);
 	}
 	
