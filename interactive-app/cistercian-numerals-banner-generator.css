@@ -1,13 +1,16 @@
 /* --- Two-section layout --- */
-#craftingLists {
+#outputSides {
   display: flex;
   flex-wrap: wrap;      /* allows children to move to the next line */
+  /*gap: 1em;*/
 }
 
-#craftingLists>* {
+#outputSides>* {
   flex: 1 1 0;
   min-width: max-content; /* prevents shrinking below content size */
   box-sizing: border-box;
+  border: 1px solid lightgray;
+  padding: 0 0.5em;
 }
 /* --- */
 
@@ -17,6 +20,11 @@
 	margin: 1em;
 	resize: vertical;
 	min-height: 5lh;
+}
+
+
+.craftingList {
+	min-height: 9em;
 }
 
 
