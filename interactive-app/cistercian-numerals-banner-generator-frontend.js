@@ -8,6 +8,7 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 			- select "foregroundColor"
 			- select "backgroundColor"
 		- <h3 id="outputNumeralHeading">
+		- <img id="cistercianNumeralOutput">
 		- <div id="outputSectionLeft"> and <div id="outputSectionRight">, each with:
 			- <h4 class="bannerSideHeading">
 			- <textarea class="giveCommand">
@@ -36,9 +37,14 @@ function updateOutput(e){
 	
 	const generator = new CistercianNumeralBannerGenerator(num,colors);
 	
-	{
+	
+	{ // heading
 		const headingEl = document.getElementById("outputNumeralHeading");
 		outputNumeralHeading(num, headingEl);
+	}
+	{ // numeral preview
+		const cistercianNumeralOutputElement = document.getElementById("cistercianNumeralOutput");
+		cistercianNumeralOutputElement.src = `./cistercian-numeral.svg?value=${num}`;
 	}
 	outputSide(num, generator, BANNER_SIDE.LEFT);
 	outputSide(num, generator, BANNER_SIDE.RIGHT);
