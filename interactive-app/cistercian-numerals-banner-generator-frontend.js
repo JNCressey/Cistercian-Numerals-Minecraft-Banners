@@ -60,7 +60,7 @@ function outputCraftingSteps(bannerSpecification, craftingList){
 		}
 		{
 			const patternName = document.createElement("span");
-			patternName.textContent = `${toTitleCase(patternKeyFromValue(pattern))}`;
+			patternName.textContent = `${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`;
 			craftStepLi.append(patternName);
 		}
 		{
@@ -74,11 +74,33 @@ function outputCraftingSteps(bannerSpecification, craftingList){
 }
 
 /**
-	@param {PATTERN} p
+	
+	@param {HTMLDivElement} descriptionDiv
+*/
+function outputDescription(side, num, descriptionDiv){
+	descriptionDiv.replaceChildren(); // Removes all child nodes
+	
+	{ // title
+		/**
+			@type {number} The number this banner represents. Either with units and hundreds, or with tens and thousands.
+		*/
+		const partialNum = {
+			[BANNER_SIDE.LEFT]:  num - num%1000 + num%100 - num%10,
+			[BANNER_SIDE.RIGHT]: num%1000 - num%100 + num%10
+		}[side];
+		const heading = document.createElement("h3");
+		heading.textContent=`${toTitleCase(objectKeyFromValue(BANNER_SIDE,side))} Banner: ${partialNum}`;
+		descriptionDiv.append(heading);
+	}
+}
+
+/**
+	@param {T} O
+	@param {valueof T} p
 	@return string
 */
-function patternKeyFromValue(p){
-	return Object.keys(PATTERN).find(k=>PATTERN[k] === p);
+function objectKeyFromValue(O,p){
+	return Object.keys(O).find(k=>O[k] === p);
 }
 	
 
@@ -91,8 +113,6 @@ function updateOutput(e){
 		foreground:formData.get("foregroundColor"),
 		background:formData.get("backgroundColor")
 	};
-	
-	console.log(colors);
 	
 	const generator = new CistercianNumeralBannerGenerator(num,colors);
 	
@@ -107,7 +127,7 @@ function updateOutput(e){
 			bannerSpecification
 			.patterns
 			.map(({color,pattern}) => 
-				`${toTitleCase(color)} ${toTitleCase(patternKeyFromValue(pattern))}`
+				`${toTitleCase(color)} ${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`
 			);
 		const stepList = 
 			[
@@ -127,13 +147,25 @@ function updateOutput(e){
 		@param {BANNER_SIDE} side
 	*/
 	function listElementsOutput(side){
-		const outputListId = {
-			[BANNER_SIDE.LEFT]:  "outputListLeft",
-			[BANNER_SIDE.RIGHT]: "outputListRight"
-		}[side];
-		const bannerSpecification = generator.getBannerSpecification(side);
-		const craftingList = document.getElementById(outputListId);
-		outputCraftingSteps(bannerSpecification, craftingList);
+		{ // description
+			const descriptionDivId = {
+				[BANNER_SIDE.LEFT]:  "outputDescriptionLeft",
+				[BANNER_SIDE.RIGHT]: "outputDescriptionRight"
+			}[side];
+			const descriptionDiv = document.getElementById(descriptionDivId);
+			outputDescription(side, num, descriptionDiv);
+		}
+		
+		{ // crafting list
+			const outputListId = {
+				[BANNER_SIDE.LEFT]:  "outputListLeft",
+				[BANNER_SIDE.RIGHT]: "outputListRight"
+			}[side];
+			const bannerSpecification = generator.getBannerSpecification(side);
+			const craftingList = document.getElementById(outputListId);
+			outputCraftingSteps(bannerSpecification, craftingList);
+		}
+		
 	}
 	listElementsOutput(BANNER_SIDE.LEFT);
 	listElementsOutput(BANNER_SIDE.RIGHT);
