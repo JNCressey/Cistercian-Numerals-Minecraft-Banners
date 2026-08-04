@@ -50,12 +50,27 @@
 		</form>
 		<script>document.querySelectorAll('#generatorForm :disabled').forEach((el)=>{ el.disabled = false; });</script>
 		
+		<p>The following output shows what the selected Cistercian numeral is supposed to look like. The two banners are a representation of the left and right sides of the numeral.</p>
+		
 		<h3 id="outputNumeralHeading">Output<noscript>: for 2026</noscript></h3>
+		
+		<figure>
+			<img id="cistercianNumeralOutput" src="./cistercian-numeral.svg?value=2026">
+			<script>document.getElementById("cistercianNumeralOutput").src="./cistercian-numeral.svg?placeholder";</script>
+			<figcaption>The cistercian numeral</figcaption>
+		</figure>
 		
 		<div id="craftingLists">
 			<div id="outputSectionLeft">
 				<h4 class="bannerSideHeading">Left Banner<noscript>: 2020</noscript></h3>
 				
+				<figure>
+					<img id="bannerPreviewLeft" class="bannerPreview" src="./banner.svg">
+					<script>document.getElementById("bannerPreviewLeft").src="./banner.svg?placeholder";</script>
+					<figcaption> Banner preview</figcaption>
+				</figure>
+				
+				<h5>Give command</h5>
 				<textarea id="giveCommandLeft" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:half_horizontal,color:black},{pattern:stripe_top,color:white},{pattern:half_horizontal_bottom,color:black},{pattern:stripe_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_right,color:black}]] 1</textarea>
 				<script>document.getElementById("giveCommandLeft").value="";</script>
 				<br>
@@ -63,6 +78,7 @@
 				<button id="copyCommandLeft" class="copyCommandButton" disabled>Copy Command</button>
 				<script>document.getElementById("copyCommandLeft").disabled = false;</script>
 				
+				<h5>Crafting/Loom steps</h5>
 				<ol id="outputListLeft" class="craftingList">
 					<noscript>
 						<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
@@ -79,6 +95,13 @@
 			<div id="outputSectionRight">
 				<h4 class="bannerSideHeading">Right Banner<noscript>: 6</noscript></h3>
 				
+				<figure>
+					<img id="bannerPreviewRight" class="bannerPreview" src="./banner.svg">
+					<script>document.getElementById("bannerPreviewRight").src="./banner.svg?placeholder";</script>
+					<figcaption> Banner preview</figcaption>
+				</figure>
+				
+				<h5>Give command</h5>
 				<textarea id="giveCommandRight" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:stripe_right,color:black},{pattern:half_horizontal_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_left,color:black}]] 1</textarea>
 				<script>document.getElementById("giveCommandRight").value="";</script>
 				<br>
@@ -86,6 +109,8 @@
 				<button id="copyCommandRight" class="copyCommandButton" disabled>Copy Command</button>
 				<script>document.getElementById("copyCommandRight").disabled = false;</script>
 				
+				
+				<h5>Crafting/Loom steps</h5>
 				<ol id="outputListRight" class="craftingList">
 					<noscript>
 						<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
