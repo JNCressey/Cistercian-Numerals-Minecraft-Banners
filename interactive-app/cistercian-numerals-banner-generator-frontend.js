@@ -104,7 +104,7 @@ function outputSideHeading(num, side, headingEl){
 		[BANNER_SIDE.LEFT]:  num - num%1000 + num%100 - num%10,
 		[BANNER_SIDE.RIGHT]: num%1000 - num%100 + num%10
 	}[side];
-	headingEl.textContent=`${toTitleCase(objectKeyFromValue(BANNER_SIDE,side))} Banner: ${partialNum}`;
+	headingEl.textContent=`${toTitleCase(side)} Banner: ${partialNum}`;
 }
 
 

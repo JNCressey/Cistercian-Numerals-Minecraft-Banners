@@ -1,32 +1,36 @@
 
 // #region constants
 //{
+	
+function enumFromArray(A){
+	return Object.freeze(
+		A
+		.reduce((o, k) => (o[k] = k.toLowerCase(), o), {})
+	);
+}
 
 /**
 	Enum for the names of colors available.
 	@enum{string}
 */
-export const COLOR = Object.freeze(
-	[
-		"WHITE",
-		"ORANGE",
-		"MAGENTA",
-		"LIGHT_BLUE",
-		"YELLOW",
-		"LIME",
-		"PINK",
-		"GRAY",
-		"LIGHT_GRAY",
-		"CYAN",
-		"PURPLE",
-		"BLUE",
-		"BROWN",
-		"GREEN",
-		"RED",
-		"BLACK",
-	]
-	.reduce((o, c) => (o[c] = c.toLowerCase(), o), {})
-);
+export const COLOR = enumFromArray([
+	"WHITE",
+	"ORANGE",
+	"MAGENTA",
+	"LIGHT_BLUE",
+	"YELLOW",
+	"LIME",
+	"PINK",
+	"GRAY",
+	"LIGHT_GRAY",
+	"CYAN",
+	"PURPLE",
+	"BLUE",
+	"BROWN",
+	"GREEN",
+	"RED",
+	"BLACK",
+]);
 
 /** 
 	Enum for the names of patterns. The values are the name as used in the banner_patterns tag.
@@ -58,10 +62,10 @@ export const PATTERN = Object.freeze({
 /**
 	@enum{number}
 */
-export const BANNER_SIDE = Object.freeze({
-	LEFT: 0,
-	RIGHT: 1,
-});
+export const BANNER_SIDE = enumFromArray([
+	"LEFT",
+	"RIGHT",
+]);
 
 //}
 // #endregion constants
