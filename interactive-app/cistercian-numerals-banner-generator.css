@@ -12,25 +12,25 @@
 
 
 /* --- crafting list items --- */
-#craftingLists ol li {
+.craftingList li {
     height: 3em;
     border: 2px solid #444;
     border-radius: 0.5em;
 }
 
-#craftingLists ol>li>* {
+.craftingList li>* {
 	margin: 0.5em;
 }
 
-#craftingLists ol>li>*:nth-child(2) {
+.craftingList li>*:nth-child(2) {
 	margin-right: 4em;
 }
 
-#craftingLists ol span {
+.craftingList span {
     white-space: nowrap;
 	margin-right:1em;
 }
-#craftingLists ol img {
+.craftingList img {
     width: 2em;
     height: 2em;
 }
