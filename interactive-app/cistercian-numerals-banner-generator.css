@@ -1,0 +1,36 @@
+/* --- Two-section layout --- */
+#craftingLists {
+  display: flex;
+  flex-wrap: wrap;      /* allows children to move to the next line */
+}
+
+#craftingLists>* {
+  flex: 1 1 0;
+  min-width: max-content; /* prevents shrinking below content size */
+  box-sizing: border-box;
+}
+
+
+/* --- crafting list items --- */
+#craftingLists ol li {
+    height: 3em;
+    border: 2px solid #444;
+    border-radius: 0.5em;
+}
+
+#craftingLists ol>li>* {
+	margin: 0.5em;
+}
+
+#craftingLists ol>li>*:nth-child(2) {
+	margin-right: 4em;
+}
+
+#craftingLists ol span {
+    white-space: nowrap;
+	margin-right:1em;
+}
+#craftingLists ol img {
+    width: 2em;
+    height: 2em;
+}
