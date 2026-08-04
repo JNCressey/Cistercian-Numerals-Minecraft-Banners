@@ -11,6 +11,7 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 		- <div id="outputSectionLeft"> and <div id="outputSectionRight">, each with:
 			- <h4 class="bannerSideHeading">
 			- <textarea class="giveCommand">
+			- <button class="copyCommandButton">
 			- <ol class="craftingList">
 			
 			
@@ -189,7 +190,19 @@ function addColorOptionsToSelect(selectEl, defaultValue){
 	selectEl.value = defaultValue;
 }
 
+/**
+	@param {string} sideSectionId The id of the target side section.
+*/
+function addCopyToClipboardFunctions(sideSectionId){
+	/** @type {HTMLButtonElement}*/
+	const copyCommandButtonElement = document.querySelector(`#${sideSectionId} .copyCommandButton`);
+	/** @type {HTMLTextAreaElement} */
+	const giveCommandOutputArea = document.querySelector(`#${sideSectionId} .giveCommand`);
+	copyCommandButtonElement.addEventListener("click", ()=>navigator.clipboard.writeText(giveCommandOutputArea.value));
+}
+
 
 addColorOptionsToSelect(document.getElementById("foregroundColor"), COLOR.BLACK);
 addColorOptionsToSelect(document.getElementById("backgroundColor"), COLOR.WHITE);
 document.getElementById("generatorForm").addEventListener("submit", updateOutput);
+["outputSectionLeft","outputSectionRight"].forEach(addCopyToClipboardFunctions);
