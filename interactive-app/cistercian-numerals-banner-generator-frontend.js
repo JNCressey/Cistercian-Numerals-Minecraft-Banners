@@ -7,9 +7,12 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 			- number "numberInput"
 			- select "foregroundColor"
 			- select "backgroundColor"
-		- <pre id="outputNumeralDetails">
-		- <pre id="outputLeft">
-		- <pre id="outputRight">
+		- <h3 id="outputNumeralHeading">
+		- <div id="outputSectionLeft"> and <div id="outputSectionRight">, each with:
+			- <h4 class="bannerSideHeading">
+			- <textarea class="giveCommand">
+			- <ol class="craftingList">
+			
 			
 */
 
@@ -20,12 +23,99 @@ function toTitleCase(str) {
 		.replace(/\b\w/g, c => c.toUpperCase());
 }
 
+function updateOutput(e){
+	e.preventDefault();   // stops the POST
+	
+	const formData = new FormData(e.target);
+	const num = formData.get("numberInput");
+	const colors = {
+		foreground:formData.get("foregroundColor"),
+		background:formData.get("backgroundColor")
+	};
+	
+	const generator = new CistercianNumeralBannerGenerator(num,colors);
+	
+	{
+		const headingEl = document.getElementById("outputNumeralHeading");
+		outputNumeralHeading(num, headingEl);
+	}
+	outputSide(num, generator, BANNER_SIDE.LEFT);
+	outputSide(num, generator, BANNER_SIDE.RIGHT);
+}
+
+// #region updateOutput helpers
+//{
+
+/**
+	@param {number} num
+	@param {HTMLHeadingElement} headingEl The target heading to update.
+*/
+function outputNumeralHeading(num,headingEl){
+	headingEl.textContent = `Output: for ${num}`;
+}
+
+/**
+	@param {number} num
+	@param {CistercianNumeralBannerGenerator} generator
+	@param {BANNER_SIDE} side
+*/
+function outputSide(num, generator, side){
+	const outputSectionId = {
+		[BANNER_SIDE.LEFT]:  "outputSectionLeft",
+		[BANNER_SIDE.RIGHT]: "outputSectionRight"
+	}[side];
+	
+	{ // heading
+		const headingEl = document.querySelector(`#${outputSectionId} h4`);
+		outputSideHeading(num, side, headingEl);
+	}
+	
+	{ // give command
+		const giveCommandOutputArea = document.querySelector(`#${outputSectionId} .giveCommand`);
+		outputGiveCommand(generator, side, giveCommandOutputArea);
+	}
+	
+	{ // crafting list
+		const craftingList = document.querySelector(`#${outputSectionId} .craftingList`);
+		outputCraftingSteps(generator, side, craftingList);
+	}
+}
+
+
+/**
+	@param {number} num
+	@param {BANNER_SIDE} side
+	@param {HTMLHeadingElement} headingEl The target heading to update.
+*/
+function outputSideHeading(num, side, headingEl){
+	const partialNum = {
+		[BANNER_SIDE.LEFT]:  num - num%1000 + num%100 - num%10,
+		[BANNER_SIDE.RIGHT]: num%1000 - num%100 + num%10
+	}[side];
+	headingEl.textContent=`${toTitleCase(objectKeyFromValue(BANNER_SIDE,side))} Banner: ${partialNum}`;
+}
+
+
 /**
 	add the required crafting steps to the crafting list.
-	@param {import("./cistercian-numerals-banner-generator.js").BannerSpecification} bannerSpecification
+	@param {CistercianNumeralBannerGenerator} generator
+	@param {BANNER_SIDE} side
+	@param {HTMLTextAreaElement} giveCommandOutputArea The target area to put the give command.
+*/
+function outputGiveCommand(generator, side, giveCommandOutputArea){
+	const giveCommand = generator.getCommandGiveBanner(side);
+	giveCommandOutputArea.value = giveCommand;
+}
+
+
+/**
+	add the required crafting steps to the crafting list.
+	@param {CistercianNumeralBannerGenerator} generator
+	@param {BANNER_SIDE} side
 	@param {HTMLOListElement} craftingList The target list to add the steps to.
 */
-function outputCraftingSteps(bannerSpecification, craftingList){
+function outputCraftingSteps(generator, side, craftingList){
+	const bannerSpecification = generator.getBannerSpecification(side);
 	craftingList.replaceChildren(); // Removes all child nodes
 	
 	{ // base banner
@@ -73,26 +163,9 @@ function outputCraftingSteps(bannerSpecification, craftingList){
 	});
 }
 
-/**
-	
-	@param {HTMLDivElement} descriptionDiv
-*/
-function outputDescription(side, num, descriptionDiv){
-	descriptionDiv.replaceChildren(); // Removes all child nodes
-	
-	{ // title
-		/**
-			@type {number} The number this banner represents. Either with units and hundreds, or with tens and thousands.
-		*/
-		const partialNum = {
-			[BANNER_SIDE.LEFT]:  num - num%1000 + num%100 - num%10,
-			[BANNER_SIDE.RIGHT]: num%1000 - num%100 + num%10
-		}[side];
-		const heading = document.createElement("h3");
-		heading.textContent=`${toTitleCase(objectKeyFromValue(BANNER_SIDE,side))} Banner: ${partialNum}`;
-		descriptionDiv.append(heading);
-	}
-}
+//}
+// #endregion updateOutput helpers
+
 
 /**
 	@param {T} O
@@ -101,74 +174,6 @@ function outputDescription(side, num, descriptionDiv){
 */
 function objectKeyFromValue(O,p){
 	return Object.keys(O).find(k=>O[k] === p);
-}
-	
-
-function updateOutput(e){
-	e.preventDefault();   // stops the POST
-	
-	const formData = new FormData(e.target);
-	const num = formData.get("numberInput");
-	const colors = {
-		foreground:formData.get("foregroundColor"),
-		background:formData.get("backgroundColor")
-	};
-	
-	const generator = new CistercianNumeralBannerGenerator(num,colors);
-	
-	/**
-		@param {BANNER_SIDE} side
-		@return {string}
-	*/
-	function preOutput(side){
-		const giveCommand = generator.getCommandGiveBanner(side);
-		const bannerSpecification = generator.getBannerSpecification(side);
-		const patternSteps = 
-			bannerSpecification
-			.patterns
-			.map(({color,pattern}) => 
-				`${toTitleCase(color)} ${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`
-			);
-		const stepList = 
-			[
-				`${toTitleCase(bannerSpecification.baseColor)} Banner`,
-				...patternSteps
-			]
-			.map(i=>`- ${i}`)
-			.join("\n");
-		return `Give command:\n${giveCommand}\n\nSteps:\n${stepList}`;
-	}
-	document.getElementById("outputNumeralDetails").textContent = `# For number ${num}`;
-	document.getElementById("outputLeft").textContent = `## Left \n${preOutput(BANNER_SIDE.LEFT)}`;
-	document.getElementById("outputRight").textContent = `## Right \n${preOutput(BANNER_SIDE.RIGHT)}`;
-	
-	
-	/**
-		@param {BANNER_SIDE} side
-	*/
-	function listElementsOutput(side){
-		{ // description
-			const descriptionDivId = {
-				[BANNER_SIDE.LEFT]:  "outputDescriptionLeft",
-				[BANNER_SIDE.RIGHT]: "outputDescriptionRight"
-			}[side];
-			const descriptionDiv = document.getElementById(descriptionDivId);
-			outputDescription(side, num, descriptionDiv);
-		}
-		
-		{ // crafting list
-			const outputListId = {
-				[BANNER_SIDE.LEFT]:  "outputListLeft",
-				[BANNER_SIDE.RIGHT]: "outputListRight"
-			}[side];
-			const bannerSpecification = generator.getBannerSpecification(side);
-			const craftingList = document.getElementById(outputListId);
-			outputCraftingSteps(bannerSpecification, craftingList);
-		}
-		
-	}
-	listElementsOutput(BANNER_SIDE.LEFT);
-	listElementsOutput(BANNER_SIDE.RIGHT);
 }
 
 
@@ -184,11 +189,7 @@ function addColorOptionsToSelect(selectEl, defaultValue){
 	selectEl.value = defaultValue;
 }
 
-document.querySelectorAll('#generatorForm :disabled').forEach(function(el) {
-	console.log(el);
-	el.disabled = false;
-});
-document.getElementById("numberInput").value="";
+
 addColorOptionsToSelect(document.getElementById("foregroundColor"), COLOR.BLACK);
 addColorOptionsToSelect(document.getElementById("backgroundColor"), COLOR.WHITE);
 document.getElementById("generatorForm").addEventListener("submit", updateOutput);

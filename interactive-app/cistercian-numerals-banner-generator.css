@@ -9,6 +9,15 @@
   min-width: max-content; /* prevents shrinking below content size */
   box-sizing: border-box;
 }
+/* --- */
+
+
+.giveCommand {
+	width: calc(100% - 2em);
+	margin: 1em;
+	resize: vertical;
+	min-height: 5lh;
+}
 
 
 /* --- crafting list items --- */
@@ -34,3 +43,4 @@
     width: 2em;
     height: 2em;
 }
+/* --- */

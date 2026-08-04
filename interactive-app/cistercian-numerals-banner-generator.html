@@ -3,7 +3,6 @@
 	<script type="module" src="./cistercian-numerals-banner-generator-frontend.js"></script>
 	
 	<style>
-		
 		#generatorWidget {
 			border: 1px solid #aaa;
 			padding: 0.5em;
@@ -26,12 +25,13 @@
 		<h2>Interactive Generator</h2>
 		
 		<noscript>
-			<p>The interactive generator requires Javascript enabled to work.</p>
+			<p>The interactive generator requires Javascript enabled to work. Showing an example output instead.</p>
 		</noscript>
 		
 		<form id="generatorForm">
 			<label for="numberInput">Number Input:</label>
 			<input id="numberInput" name="numberInput" type="number" required min="0" max="9999" value="2026" disabled>
+			<script>document.getElementById("numberInput").value="";</script>
 			<br>
 			
 			<label> Background Colour:</label>
@@ -48,69 +48,54 @@
 			
 			<button type="submit" disabled>Generate banner patterns</button>
 		</form>
+		<script>document.querySelectorAll('#generatorForm :disabled').forEach((el)=>{ el.disabled = false; });</script>
 		
-		<pre id="outputNumeralDetails"><noscript># For number 2026</noscript></pre>
+		<h3 id="outputNumeralHeading">Output<noscript>: for 2026</noscript></h3>
 		
-		<pre id="outputLeft"><noscript>## Left 
-Give command:
-/give @p minecraft:white_banner[banner_patterns=[{pattern:half_horizontal,color:black},{pattern:stripe_top,color:white},{pattern:half_horizontal_bottom,color:black},{pattern:stripe_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_right,color:black}]] 1
-
-Steps:
-- White Banner
-- Black Per_fess
-- White Chief
-- Black Per_fess_inverted
-- White Base
-- White Fess
-- Black Pale_sininster</noscript></pre>
-
-		<pre id="outputRight"><noscript>## Right 
-Give command:
-/give @p minecraft:white_banner[banner_patterns=[{pattern:stripe_right,color:black},{pattern:half_horizontal_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_left,color:black}]] 1
-
-Steps:
-- White Banner
-- Black Pale_sininster
-- White Per_fess_inverted
-- White Fess
-- Black Pale_dexter</noscript></pre>
-	
-	
-	<div id="craftingLists">
-		<div id="outputSectionLeft">
-			<div id="outputDescriptionLeft">
-				<noscript>
-					<h3>Left Banner: 2020</h3>
-				</noscript>
+		<div id="craftingLists">
+			<div id="outputSectionLeft">
+				<h4 class="bannerSideHeading">Left Banner<noscript>: 2020</noscript></h3>
+				
+				<textarea id="giveCommandLeft" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:half_horizontal,color:black},{pattern:stripe_top,color:white},{pattern:half_horizontal_bottom,color:black},{pattern:stripe_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_right,color:black}]] 1</textarea>
+				<script>document.getElementById("giveCommandLeft").value="";</script>
+				<br>
+				
+				<button id="copyCommandLeft" class="copyCommandButton" disabled>Copy Command</button>
+				<script>document.getElementById("copyCommandLeft").disabled = false;</script>
+				
+				<ol id="outputListLeft" class="craftingList">
+					<noscript>
+						<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
+						<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Per_fess</span><img src="./icons/half_horizontal.png"></li>
+						<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Chief</span><img src="./icons/stripe_top.png"></li>
+						<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Per_fess_inverted</span><img src="./icons/half_horizontal_bottom.png"></li>
+						<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Base</span><img src="./icons/stripe_bottom.png"></li>
+						<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Fess</span><img src="./icons/stripe_middle.png"></li>
+						<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_sininster</span><img src="./icons/stripe_right.png"></li>
+					</noscript>
+				</ol>
 			</div>
-			<ol id="outputListLeft" class="craftingList">
-				<noscript>
-					<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
-					<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Per_fess</span><img src="./icons/half_horizontal.png"></li>
-					<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Chief</span><img src="./icons/stripe_top.png"></li>
-					<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Per_fess_inverted</span><img src="./icons/half_horizontal_bottom.png"></li>
-					<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Base</span><img src="./icons/stripe_bottom.png"></li>
-					<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Fess</span><img src="./icons/stripe_middle.png"></li>
-					<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_sininster</span><img src="./icons/stripe_right.png"></li>
-				</noscript>
-			</ol>
-		</div>
-		
-		<div id="outputSectionRight">
-			<div id="outputDescriptionRight">
-				<noscript>
-					<h3>Right Banner: 6</h3>
-				</noscript>
+			
+			<div id="outputSectionRight">
+				<h4 class="bannerSideHeading">Right Banner<noscript>: 6</noscript></h3>
+				
+				<textarea id="giveCommandRight" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:stripe_right,color:black},{pattern:half_horizontal_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_left,color:black}]] 1</textarea>
+				<script>document.getElementById("giveCommandRight").value="";</script>
+				<br>
+				
+				<button id="copyCommandRight" class="copyCommandButton" disabled>Copy Command</button>
+				<script>document.getElementById("copyCommandRight").disabled = false;</script>
+				
+				<ol id="outputListRight" class="craftingList">
+					<noscript>
+						<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
+						<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_sininster</span><img src="./icons/stripe_right.png"></li>
+						<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Per_fess_inverted</span><img src="./icons/half_horizontal_bottom.png"></li>
+						<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Fess</span><img src="./icons/stripe_middle.png"></li>
+						<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_dexter</span><img src="./icons/stripe_left.png"></li>
+					</noscript>
+				</ol>
 			</div>
-			<ol id="outputListRight" class="craftingList">
-				<noscript>
-					<li><span>White Banner</span><img src="./icons/WHITE-banner.png"></li>
-					<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_sininster</span><img src="./icons/stripe_right.png"></li>
-					<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Per_fess_inverted</span><img src="./icons/half_horizontal_bottom.png"></li>
-					<li><span>White Dye</span><img src="./icons/WHITE-dye.png"><span>Fess</span><img src="./icons/stripe_middle.png"></li>
-					<li><span>Black Dye</span><img src="./icons/BLACK-dye.png"><span>Pale_dexter</span><img src="./icons/stripe_left.png"></li>
-				</noscript>
-			</ol>
 		</div>
 	</div>
 	
