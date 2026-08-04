@@ -135,7 +135,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		craftingList.append(baseBannerLi);
 	}
 	
-	
+	// loom pattern steps
 	bannerSpecification.patterns.forEach(({pattern,color}) => {
 		const craftStepLi = document.createElement("li");
 		{
