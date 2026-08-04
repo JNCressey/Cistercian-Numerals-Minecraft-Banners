@@ -2,7 +2,6 @@
 #outputSides {
   display: flex;
   flex-wrap: wrap;      /* allows children to move to the next line */
-  /*gap: 1em;*/
 }
 
 #outputSides>* {
@@ -16,8 +15,7 @@
 
 
 .giveCommand {
-	width: calc(100% - 2em);
-	margin: 1em;
+	width: 100%;
 	resize: vertical;
 	min-height: 5lh;
 }
