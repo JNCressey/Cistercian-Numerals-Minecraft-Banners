@@ -118,11 +118,11 @@ function outputBannerPreview(generator,side,bannerPreview){
 	const bannerSpecification = generator.getBannerSpecification(side);
 	let urlParams = "";
 	
-	urlParams += `baseColor=${bannerSpecification.baseColor.toLowerCase()}`;
+	urlParams += `baseColor=${bannerSpecification.baseColor}`;
 	
 	bannerSpecification.patterns.forEach(({pattern,color},i)=>{
 		const stepNumber = i+1;
-		urlParams += `&pattern${stepNumber}=${pattern}&color${stepNumber}=${color.toLowerCase()}`
+		urlParams += `&pattern${stepNumber}=${pattern}&color${stepNumber}=${color}`
 	});
 	
 	//const bannerSpecificationURLEncoded = encodeURIComponent(JSON.stringify(bannerSpecification));
@@ -184,6 +184,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		}
 		{
 			const patternName = document.createElement("span");
+			/*** todo: have a map of the print friendly names instead of key reverse lookup*/
 			patternName.textContent = `${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`;
 			craftStepLi.append(patternName);
 		}
@@ -217,7 +218,7 @@ function objectKeyFromValue(O,p){
 	@param {COLOR} defaultValue The default value to set.
 */
 function addColorOptionsToSelect(selectEl, defaultValue){
-	for (const color in COLOR){
+	for (const color of Object.values(COLOR)){
 		selectEl.appendChild(new Option(toTitleCase(color), color));
 	}
 	selectEl.value = defaultValue;

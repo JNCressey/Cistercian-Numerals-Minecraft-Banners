@@ -25,7 +25,7 @@ export const COLOR = Object.freeze(
 		"RED",
 		"BLACK",
 	]
-	.reduce((o, c) => (o[c] = c, o), {})
+	.reduce((o, c) => (o[c] = c.toLowerCase(), o), {})
 );
 
 /** 
@@ -182,7 +182,7 @@ class BannerSpecificationBuilder {
 		const tagBody = (
 			this.#patterns
 				.map(
-					({pattern,color}) => `{pattern:${pattern.toLowerCase()},color:${color.toLowerCase()}}`
+					({pattern,color}) => `{pattern:${pattern.toLowerCase()},color:${color}}`
 				)
 				.join(",")
 		);
@@ -617,7 +617,7 @@ export class CistercianNumeralBannerGenerator {
 	#generate_patterns_for_one_side(side){
 		const patterns = [];
 		patterns.add = (color, pattern)=>patterns.push(
-			`{pattern:${pattern.toLowerCase()},color:${color.toLowerCase()}}`
+			`{pattern:${pattern.toLowerCase()},color:${color}}`
 		);
 		
 		// Parameters describing the two digits to make, with A having the larger face-value if they're unequal.
@@ -696,7 +696,7 @@ export class CistercianNumeralBannerGenerator {
 	*/
 	getCommandGiveBanner(side){
 		const banner = this.#bannerSpecifications[side];
-		const item = `minecraft:${banner.baseColor.toLowerCase()}_banner`;
+		const item = `minecraft:${banner.baseColor}_banner`;
 		const tags = `banner_patterns=${banner.banner_patterns}`;
 		return `/give @p ${item}[${tags}] 1`;
 	}
@@ -708,7 +708,7 @@ export class CistercianNumeralBannerGenerator {
 	*/
 	getCommandGiveShield(side){
 		const banner = this.#bannerSpecifications[side];
-		const tags = `base_color="${banner.baseColor.toLowerCase()}",banner_patterns=${banner.banner_patterns}`;
+		const tags = `base_color="${banner.baseColor}",banner_patterns=${banner.banner_patterns}`;
 		return `/give @p minecraft:shield[${tags}] 1`;
 	}
 
@@ -719,7 +719,7 @@ export class CistercianNumeralBannerGenerator {
 	*/
 	getCommandSummonArmorStand(side){
 		const banner = this.#bannerSpecifications[side];
-		const components = `{base_color:${banner.baseColor.toLowerCase()}, banner_patterns:${banner.banner_patterns}}`;
+		const components = `{base_color:${banner.baseColor}, banner_patterns:${banner.banner_patterns}}`;
 		const {equipmentHand,pose,rotation} = (
 			(side === BANNER_SIDE.LEFT)
 				? {
