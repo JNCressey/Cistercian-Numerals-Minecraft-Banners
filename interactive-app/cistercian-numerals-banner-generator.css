@@ -1,5 +1,20 @@
+/* --- image previews--- */
+canvas {
+	height: 10lh;
+}
+
+.previewBorder {
+	width: fit-content;
+	height: fit-content;
+	border: 1px grey solid;
+	padding: 10px;
+}
+/* --- */
+
+
 /* --- Two-section layout --- */
 #outputSides {
+	margin-top:1lh;
 	display: flex;
 	flex-wrap: wrap;      /* allows children to move to the next line */
 }

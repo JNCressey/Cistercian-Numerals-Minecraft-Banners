@@ -8,9 +8,10 @@ import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./c
 			- select "foregroundColor"
 			- select "backgroundColor"
 		- <h3 id="outputNumeralHeading">
-		- <img id="cistercianNumeralOutput">
+		- <canvas id="cistercianNumeralOutput">
 		- <div id="outputSectionLeft"> and <div id="outputSectionRight">, each with:
 			- <h4 class="bannerSideHeading">
+			- <canvas class="bannerPreview">
 			- <textarea class="giveCommand">
 			- <button class="copyCommandButton">
 			- <ol class="craftingList">
@@ -44,7 +45,7 @@ function updateOutput(e){
 	}
 	{ // numeral preview
 		const cistercianNumeralOutputElement = document.getElementById("cistercianNumeralOutput");
-		cistercianNumeralOutputElement.src = `./cistercian-numeral.svg?value=${num}`;
+		drawCistercianNumeral(num, cistercianNumeralOutputElement);
 	}
 	outputSide(num, generator, BANNER_SIDE.LEFT);
 	outputSide(num, generator, BANNER_SIDE.RIGHT);
@@ -60,6 +61,42 @@ function updateOutput(e){
 function outputNumeralHeading(num,headingEl){
 	headingEl.textContent = `Output: for ${num}`;
 }
+
+/**
+	@param {number} num
+	@param {HTMLCanvasElement} cistercianNumeralOutputElement
+*/
+function drawCistercianNumeral(num, cistercianNumeralOutputElement)
+{
+	const cx = cistercianNumeralOutputElement.getContext("2d");
+	/*** todo 
+	make by drawing lines between these points.
+	points form squares
+	
+	a-b-c
+	| | |
+	d-e-f
+	  |
+	g-h-i
+	| | |
+	j k l
+	
+	*/
+	cx.clearRect(0, 0, cistercianNumeralOutputElement.width, cistercianNumeralOutputElement.height);
+	cx.lineWidth=10;
+	
+	cx.beginPath();
+	cx.moveTo(100,0);
+	cx.lineTo(0,0);
+	cx.lineTo(0,100);
+	cx.stroke();
+	
+	cx.beginPath();
+	cx.moveTo(0,num%100);
+	cx.lineTo((num-num%100)/100,0);
+	cx.stroke();
+}
+
 
 /**
 	@param {number} num
@@ -112,22 +149,26 @@ function outputSideHeading(num, side, headingEl){
 	add the required crafting steps to the crafting list.
 	@param {CistercianNumeralBannerGenerator} generator
 	@param {BANNER_SIDE} side
-	@param {HTMLImgElement} bannerPreview The target img to change the src of.
+	@param {HTMLCanvasElement} bannerPreview The target img to change the src of.
 */
 function outputBannerPreview(generator,side,bannerPreview){
 	const bannerSpecification = generator.getBannerSpecification(side);
-	let urlParams = "";
+	/*** todo */
+	const cx = bannerPreview.getContext("2d");
 	
-	urlParams += `baseColor=${bannerSpecification.baseColor}`;
+	cx.clearRect(0, 0, bannerPreview.width, bannerPreview.height);
+	cx.lineWidth=10;
 	
-	bannerSpecification.patterns.forEach(({pattern,color},i)=>{
-		const stepNumber = i+1;
-		urlParams += `&pattern${stepNumber}=${pattern}&color${stepNumber}=${color}`
-	});
+	cx.beginPath();
+	cx.moveTo(100,0);
+	cx.lineTo(0,0);
+	cx.lineTo(0,100);
+	cx.stroke();
 	
-	//const bannerSpecificationURLEncoded = encodeURIComponent(JSON.stringify(bannerSpecification));
-	//bannerPreview.src = `./banner.svg?bannerSpecification=${bannerSpecificationURLEncoded}`;
-	bannerPreview.src = `./banner.svg?${urlParams}`;
+	cx.beginPath();
+	cx.moveTo(0,generator.num%100);
+	cx.lineTo((generator.num-generator.num%100)/100,0);
+	cx.stroke();
 }
 
 /**

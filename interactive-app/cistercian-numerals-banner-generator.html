@@ -56,21 +56,28 @@
 		
 		<h3 id="outputNumeralHeading">Output<noscript>: for 2026</noscript></h3>
 		
-		<figure>
-			<img id="cistercianNumeralOutput" src="./cistercian-numeral.svg?value=2026">
-			<script>document.getElementById("cistercianNumeralOutput").src="./cistercian-numeral.svg?placeholder";</script>
-			<figcaption>The cistercian numeral</figcaption>
-		</figure>
+		<details open>
+			<summary>The cistercian numeral</summary>
+			<div class="previewBorder">
+				<canvas id="cistercianNumeralOutput" width="200" height="300">
+					<img src="./cistercianNumeral-2026.png">
+				</canvas>
+			</div>
+		</details>
+		
 		
 		<div id="outputSides">
 			<div id="outputSectionLeft">
 				<h4 class="bannerSideHeading">Left Banner<noscript>: 2020</noscript></h3>
 				
-				<figure>
-					<img id="bannerPreviewLeft" class="bannerPreview" src="./banner.svg?baseColor=white&pattern1=half_horizontal&color1=black&pattern2=stripe_top&color2=white&pattern3=half_horizontal_bottom&color3=black&pattern4=stripe_bottom&color4=white&pattern5=stripe_middle&color5=white&pattern6=stripe_right&color6=black">
-					<script>document.getElementById("bannerPreviewLeft").src="./banner.svg?placeholder";</script>
-					<figcaption> Banner preview</figcaption>
-				</figure>
+				<details open>
+					<summary> Banner preview</summary>
+					<div class="previewBorder">
+						<canvas id="bannerPreviewLeft" class="bannerPreview" width="200" height="400">
+							<img src="./cistercianBanner-2026-left.png">
+						</canvas>
+					</div>
+				</details>
 				
 				<h5>Give command</h5>
 				<textarea id="giveCommandLeft" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:half_horizontal,color:black},{pattern:stripe_top,color:white},{pattern:half_horizontal_bottom,color:black},{pattern:stripe_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_right,color:black}]] 1</textarea>
@@ -97,11 +104,14 @@
 			<div id="outputSectionRight">
 				<h4 class="bannerSideHeading">Right Banner<noscript>: 6</noscript></h3>
 				
-				<figure>
-					<img id="bannerPreviewRight" class="bannerPreview" src="./banner.svg?baseColor=white&pattern1=stripe_right&color1=black&pattern2=half_horizontal_bottom&color2=white&pattern3=stripe_middle&color3=white&pattern4=stripe_left&color4=black">
-					<script>document.getElementById("bannerPreviewRight").src="./banner.svg?placeholder";</script>
-					<figcaption> Banner preview</figcaption>
-				</figure>
+				<details open>
+					<summary> Banner preview</summary>
+					<div class="previewBorder">
+						<canvas id="bannerPreviewRight" class="bannerPreview" width="200" height="400">
+							<img src="./cistercianBanner-2026-right.png">
+						</canvas>
+					</div>
+				</details>
 				
 				<h5>Give command</h5>
 				<textarea id="giveCommandRight" class="giveCommand">/give @p minecraft:white_banner[banner_patterns=[{pattern:stripe_right,color:black},{pattern:half_horizontal_bottom,color:white},{pattern:stripe_middle,color:white},{pattern:stripe_left,color:black}]] 1</textarea>
