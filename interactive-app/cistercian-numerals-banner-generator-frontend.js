@@ -224,19 +224,73 @@ function addColorOptionsToSelect(selectEl, defaultValue){
 	selectEl.value = defaultValue;
 }
 
+
 /**
 	@param {string} sideSectionId The id of the target side section.
 */
-function addCopyToClipboardFunctions(sideSectionId){
+function addFunctionsCopyToClipboard(sideSectionId){
 	/** @type {HTMLButtonElement}*/
 	const copyCommandButtonElement = document.querySelector(`#${sideSectionId} .copyCommandButton`);
 	/** @type {HTMLTextAreaElement} */
 	const giveCommandOutputArea = document.querySelector(`#${sideSectionId} .giveCommand`);
-	copyCommandButtonElement.addEventListener("click", ()=>navigator.clipboard.writeText(giveCommandOutputArea.value));
+	copyCommandButtonElement.addEventListener("click", ()=>
+		navigator.clipboard.writeText(giveCommandOutputArea.value)
+	);
 }
 
+
+// #region input-change warning functions
+//{
+
+/**
+	For when inputs change, set the warning if the give command output isn't empty.
+	@param {HTMLButtonElement} copyCommandButtonElement
+	@param {HTMLTextAreaElement} giveCommandOutputArea
+*/
+function addWarningChangedInput(copyCommandButtonElement, giveCommandOutputArea){
+	if (giveCommandOutputArea.value !== "") {
+		copyCommandButtonElement.classList.add("warningChangedInput");
+	} else {
+		copyCommandButtonElement.classList.remove("warningChangedInput");
+	}
+}
+
+
+/**
+	Remove the input change warning.
+	@param {HTMLButtonElement} copyCommandButtonElement
+*/
+function removeWarningChangedInput(copyCommandButtonElement) {
+	copyCommandButtonElement.classList.remove("warningChangedInput");
+}
+
+
+/**
+	@param {string} sideSectionId The id of the target side section.
+*/
+function addFunctionsWarningChangedInput(sideSectionId){
+	const generatorForm = document.getElementById("generatorForm");
+	/** @type {HTMLButtonElement}*/
+	const copyCommandButtonElement = document.querySelector(`#${sideSectionId} .copyCommandButton`);
+	/** @type {HTMLTextAreaElement} */
+	const giveCommandOutputArea = document.querySelector(`#${sideSectionId} .giveCommand`);
+	generatorForm.addEventListener("input", ()=>
+		addWarningChangedInput(copyCommandButtonElement, giveCommandOutputArea)
+	);
+	giveCommandOutputArea.addEventListener("input", ()=>
+		addWarningChangedInput(copyCommandButtonElement, giveCommandOutputArea)
+	);
+	generatorForm.addEventListener("submit", ()=>
+		removeWarningChangedInput(copyCommandButtonElement)
+	);
+	
+}
+
+//}
+// #endregioninput-change warning functions
 
 addColorOptionsToSelect(document.getElementById("foregroundColor"), COLOR.BLACK);
 addColorOptionsToSelect(document.getElementById("backgroundColor"), COLOR.WHITE);
 document.getElementById("generatorForm").addEventListener("submit", updateOutput);
-["outputSectionLeft","outputSectionRight"].forEach(addCopyToClipboardFunctions);
+["outputSectionLeft","outputSectionRight"].forEach(addFunctionsCopyToClipboard);
+["outputSectionLeft","outputSectionRight"].forEach(addFunctionsWarningChangedInput);

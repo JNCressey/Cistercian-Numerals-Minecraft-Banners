@@ -1,17 +1,24 @@
 /* --- Two-section layout --- */
 #outputSides {
-  display: flex;
-  flex-wrap: wrap;      /* allows children to move to the next line */
+	display: flex;
+	flex-wrap: wrap;      /* allows children to move to the next line */
 }
 
 #outputSides>* {
-  flex: 1 1 0;
-  min-width: max-content; /* prevents shrinking below content size */
-  box-sizing: border-box;
-  border: 1px solid lightgray;
-  padding: 0 0.5em;
+	flex: 1 1 0;
+	min-width: max-content; /* prevents shrinking below content size */
+	box-sizing: border-box;
+	border: 1px solid lightgray;
+	padding: 0 0.5em;
 }
 /* --- */
+
+
+.warningChangedInput {
+	background: red;
+	font-weight: bold;
+	color: white;
+}
 
 
 .giveCommand {
@@ -28,9 +35,9 @@
 
 /* --- crafting list items --- */
 .craftingList li {
-    height: 3em;
-    border: 2px solid #444;
-    border-radius: 0.5em;
+	height: 3em;
+	border: 2px solid #444;
+	border-radius: 0.5em;
 }
 
 .craftingList li>* {
@@ -42,11 +49,11 @@
 }
 
 .craftingList span {
-    white-space: nowrap;
+	white-space: nowrap;
 	margin-right:1em;
 }
 .craftingList img {
-    width: 2em;
-    height: 2em;
+width: 2em;
+height: 2em;
 }
 /* --- */
