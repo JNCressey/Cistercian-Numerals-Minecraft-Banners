@@ -205,13 +205,13 @@ class BannerSpecificationBuilder {
 class PatternGeneratorStateMachine {
 	
 	/**
-		@type {DigitParameters
+		@type {DigitParameters}
 		One of the two numbers to set. Only set if either is a 3. Always a 3.
 	*/
 	C;
 	
 	/**
-		@type {DigitParameters
+		@type {DigitParameters}
 		One of the two numbers to set. Only set if either is a 3. The non-3 digit if they're not equal.
 	*/
 	D;
@@ -237,119 +237,96 @@ class PatternGeneratorStateMachine {
 	
 	// entry point for the flowchart.
 	START(){
-		if (this.A.faceValue!==3 && this.B.faceValue!==3){
-			switch(this.A.faceValue){
-				case 8:
-				case 9:
-					this.banner.setBaseColor(this.colors.foreground);
-					switch(this.B.faceValue){
-						case 7:
+	
+		switch(this.A.faceValue){
+			case 8:
+			case 9:
+				this.banner.setBaseColor(this.colors.foreground);
+				switch(this.B.faceValue){
+					case 7:
+						this.banner.add(
+							this.colors.background,
+							(this.B.exponent <2) 
+								? PATTERN.PER_FESS 
+								: PATTERN.PER_FESS_INVERTED
+						);
+						if(this.A.faceValue===8){
+							this.banner.add(
+								this.colors.foreground,
+								PATTERN.BORDURE
+							);
+							this.runAuxiliaryFlowchartWith(this.A);
+						} else { // A=9
+							this.runAuxiliaryFlowchartWith(this.A);
+							this.banner.add(
+								this.colors.foreground,
+								(this.side===BANNER_SIDE.RIGHT)
+									? PATTERN.PALE_SININSTER
+									: PATTERN.PALE_DEXTER
+							);
+						}
+						return this.COLLECTION_4();
+						
+					case 8:
+					case 9:
+						if (this.A.faceValue===this.B.faceValue){
 							this.banner.add(
 								this.colors.background,
-								(this.B.exponent <2) 
-									? PATTERN.PER_FESS 
-									: PATTERN.PER_FESS_INVERTED
+								(this.B.exponent <2)
+									? PATTERN.CHIEF
+									: PATTERN.BASE
 							);
-							if(this.A.faceValue===8){
-								this.banner.add(
-									this.colors.foreground,
-									PATTERN.BORDURE
-								);
-								this.runAuxiliaryFlowchartWith(this.A);
-							} else { // A=9
-								this.runAuxiliaryFlowchartWith(this.A);
-								this.banner.add(
-									this.colors.foreground,
-									(this.side===BANNER_SIDE.RIGHT)
-										? PATTERN.PALE_SININSTER
-										: PATTERN.PALE_DEXTER
-								);
-							}
-							return this.COLLECTION_5();
+							this.runAuxiliaryFlowchartWith(this.A);
+							return this.COLLECTION_4();
 							
-						case 8:
-						case 9:
-							if (this.A.faceValue===this.B.faceValue){
-								this.banner.add(
-									this.colors.background,
-									(this.B.exponent <2)
-										? PATTERN.CHIEF
-										: PATTERN.BASE
-								);
-								this.runAuxiliaryFlowchartWith(this.A);
-								return this.COLLECTION_5();
-							} else { // digits are 9 & 8
-								this.runAuxiliaryFlowchartWith(this.A);
-								return this.COLLECTION_3();
-							}
-						
-						default: // B<7
-							return this.COLLECTION_1();
-					}
+						} else { // digits are 9 & 8
+							this.runAuxiliaryFlowchartWith(this.A);
+							return this.COLLECTION_3();
+							
+						}
 					
-				default: // A<8
-					this.banner.setBaseColor(this.colors.background);
-					return this.COLLECTION_1();
-			}
-		} else { // at least one of the values is 3
-			this.banner
-				.setBaseColor(this.colors.foreground)
-				.add(
-					this.colors.background,
-					PATTERN.LOZENGE
-				);
-			// the two digits, with at least C being a 3.
-			[this.C,this.D] = (
-				(this.A.faceValue===3) 
-					? [this.A, this.B] 
-					: [this.B, this.A]);
-			switch(this.D.faceValue){
-				case 3:
-					this.banner
-						.add(
-							this.colors.background,
-							(this.side === BANNER_SIDE.RIGHT) 
-								? PATTERN.PER_PALE 
-								: PATTERN.PER_PALE_INVERTED
-						)
-						.add(
-							this.colors.foreground,
-							PATTERN.CHIEF_INDENTED
-						)
-						.add(
-							this.colors.foreground,
-							PATTERN.BASE_INDENTED
-						);
-					return this.COLLECTION_5();
-					
-				case 2:
-				case 4:
-				case 5:
-				case 6:
-				case 7:
-				case 8:
-				case 9:
-					return this.COLLECTION_4();
+					default: // B<7
+						return this.COLLECTION_1();
+				}
 				
-				case 0:
-				case 1:
-				case 5:
-					this.banner
-						.add(
-							this.colors.background,
-							(this.side === BANNER_SIDE.RIGHT) 
-								? PATTERN.PER_PALE 
-								: PATTERN.PER_PALE_INVERTED
-						)
-						.add(
-							this.colors.foreground,
-							(this.C.exponent <2)
-								? PATTERN.CHIEF_INDENTED
-								: PATTERN.BASE_INDENTED
-						);
-					return this.COLLECTION_4();
-			}
+			default: // A<8
+				this.banner.setBaseColor(this.colors.background);
+		
+				if (this.A.faceValue!==3 && this.B.faceValue!==3){
+					// neither digit is 3
+					return this.COLLECTION_1();
+				} else { // at least one of the values is 3
+					[this.C,this.D] = ( // the two digits, with at least C being a 3.
+						(this.A.faceValue===3) 
+							? [this.A, this.B] 
+							: [this.B, this.A]);
+					this.runAuxiliaryFlowchartWith(this.C);
+					switch(this.D.faceValue){
+						case 3: // both digits are 3
+							this.runAuxiliaryFlowchartWith(this.D);
+							this.banner.add(this.colors.background, PATTERN.LOZENGE);
+							return this.COLLECTION_5();
+						
+						case 7:
+							this.banner
+								.add(this.colors.background, PATTERN.LOZENGE)
+								.add(this.colors.foreground, PATTERN.BORDURE);
+							return this.COLLECTION_4();
+						
+						default:
+							this.banner.add(this.colors.background, PATTERN.LOZENGE);
+							this.runAuxiliaryFlowchartWith(this.D);
+							if(this.D.faceValue==6) {
+								return this.COLLECTION_4();
+								
+							} else {
+								return this.COLLECTION_5();
+								
+							}
+					}
+				}
 		}
+		
 	}
 	
 	
@@ -359,7 +336,7 @@ class PatternGeneratorStateMachine {
 			(this.A.faceValue===this.B.faceValue) &&
 			(this.A.faceValue===6 || this.A.faceValue===7)
 		){
-			return this.COLLECTION_5();
+			return this.COLLECTION_4();
 		} else {
 			switch (this.A.faceValue){
 				case 6:
@@ -378,6 +355,7 @@ class PatternGeneratorStateMachine {
 						case 6:
 							return this.COLLECTION_2();
 						
+						case 3:
 						case 4:
 							this.banner.add(
 								this.colors.background,
@@ -386,7 +364,7 @@ class PatternGeneratorStateMachine {
 									: PATTERN.PER_FESS_INVERTED
 							);
 							this.runAuxiliaryFlowchartWith(this.B);
-							return this.COLLECTION_6();
+							return this.COLLECTION_5();
 					}
 				
 				default: // A<6
@@ -409,44 +387,17 @@ class PatternGeneratorStateMachine {
 	
 	COLLECTION_3(){
 		this.runAuxiliaryFlowchartWith(this.B);
-		return this.COLLECTION_5();
+		return this.COLLECTION_4();
 	}
 	
 	
 	COLLECTION_4(){
-		this.banner.add(
-			(this.D.faceValue===8 || this.D.faceValue===9)
-				? this.colors.foreground
-				: this.colors.background, 
-			(this.D.exponent <2)
-				? PATTERN.PER_FESS
-				: PATTERN.PER_FESS_INVERTED,
-		);
-		this.runAuxiliaryFlowchartWith(this.D);
-		switch (this.D.faceValue){
-			case 0:
-			case 2:
-			case 4:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-				return this.COLLECTION_5();
-			
-			case 1:
-			case 5:
-				return this.COLLECTION_6();
-		}
+		this.banner.add(this.colors.background, PATTERN.FESS);
+		return this.COLLECTION_5();
 	}
 	
 	
 	COLLECTION_5(){
-		this.banner.add(this.colors.background, PATTERN.FESS);
-		return this.COLLECTION_6();
-	}
-	
-	
-	COLLECTION_6(){
 		this.banner.add(
 			this.colors.foreground,
 			(this.side === BANNER_SIDE.RIGHT)
@@ -495,7 +446,24 @@ class PatternGeneratorStateMachine {
 					);
 				return;
 			
-			// this subroutine is never called for 3
+			case 3:
+				this.banner
+					.add(
+						this.colors.foreground,
+						(digitParameters.exponent <2)
+							? PATTERN.CHIEF_INDENTED
+							: PATTERN.BASE_INDENTED
+					)
+					.add(
+						this.colors.foreground,
+						[
+							PATTERN.CHIEF_SINISTER_CANTON,
+							PATTERN.CHIEF_DEXTER_CANTON,
+							PATTERN.BASE_SINSITER_CANTON,
+							PATTERN.BASE_DEXTER_CANTON,
+						][digitParameters.exponent]
+					)
+				return;
 			
 			case 4:
 				this.banner
