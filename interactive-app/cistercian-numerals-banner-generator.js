@@ -669,7 +669,7 @@ export class CistercianNumeralBannerGenerator {
 	getCommandGiveBanner(side){
 		const banner = this.#bannerSpecifications[side];
 		const item = `minecraft:${banner.baseColor}_banner`;
-		const tags = `banner_patterns=${banner.banner_patterns}`;
+		const tags = `custom_name="${this.num}",banner_patterns=${banner.banner_patterns}`;
 		return `/give @p ${item}[${tags}] 1`;
 	}
 
