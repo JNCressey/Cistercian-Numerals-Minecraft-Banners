@@ -1,4 +1,5 @@
 import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
+import {drawCistercianNumeral} from "./cistercian-numeral-draw-canvas.js";
 
 
 /*
@@ -60,41 +61,6 @@ function updateOutput(e){
 */
 function outputNumeralHeading(num,headingEl){
 	headingEl.textContent = `Output: for ${num}`;
-}
-
-/**
-	@param {number} num
-	@param {HTMLCanvasElement} cistercianNumeralOutputElement
-*/
-function drawCistercianNumeral(num, cistercianNumeralOutputElement)
-{
-	const cx = cistercianNumeralOutputElement.getContext("2d");
-	/*** todo 
-	make by drawing lines between these points.
-	points form squares
-	
-	a-b-c
-	| | |
-	d-e-f
-	  |
-	g-h-i
-	| | |
-	j k l
-	
-	*/
-	cx.clearRect(0, 0, cistercianNumeralOutputElement.width, cistercianNumeralOutputElement.height);
-	cx.lineWidth=10;
-	
-	cx.beginPath();
-	cx.moveTo(100,0);
-	cx.lineTo(0,0);
-	cx.lineTo(0,100);
-	cx.stroke();
-	
-	cx.beginPath();
-	cx.moveTo(0,num%100);
-	cx.lineTo((num-num%100)/100,0);
-	cx.stroke();
 }
 
 

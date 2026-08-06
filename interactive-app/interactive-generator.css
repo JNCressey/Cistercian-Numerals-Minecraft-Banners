@@ -1,5 +1,5 @@
 /* --- image previews--- */
-canvas {
+canvas, canvas img {
 	height: 10lh;
 }
 
