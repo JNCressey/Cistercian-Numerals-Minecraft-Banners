@@ -28,6 +28,11 @@ function toTitleCase(str) {
 		.replace(/\b\w/g, c => c.toUpperCase());
 }
 
+/**
+	@type {Object.<PATTERN, string>}
+*/
+const patternNiceName = Object.fromEntries(Object.entries(PATTERN).map(([k,v])=>[v,toTitleCase(k.replaceAll("_", " "))]));
+
 function updateOutput(e){
 	e.preventDefault();   // stops the POST
 	
@@ -211,8 +216,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		}
 		{
 			const patternNameTd = document.createElement("td");
-			/*** todo: have a map of the print friendly names instead of key reverse lookup*/
-			patternNameTd.textContent = `${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`;
+			patternNameTd.textContent = patternNiceName[pattern]; 
 			craftStepTr.append(patternNameTd);
 		}
 		{
@@ -230,16 +234,6 @@ function outputCraftingSteps(generator, side, craftingList){
 
 //}
 // #endregion updateOutput helpers
-
-
-/**
-	@param {T} O
-	@param {valueof T} p
-	@return string
-*/
-function objectKeyFromValue(O,p){
-	return Object.keys(O).find(k=>O[k] === p);
-}
 
 
 /**
