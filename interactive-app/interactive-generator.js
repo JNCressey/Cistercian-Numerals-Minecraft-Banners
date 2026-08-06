@@ -28,10 +28,6 @@ function toTitleCase(str) {
 		.replace(/\b\w/g, c => c.toUpperCase());
 }
 
-/**
-	@type {Object.<PATTERN, string>}
-*/
-const patternNiceName = Object.fromEntries(Object.entries(PATTERN).map(([k,v])=>[v,toTitleCase(k.replaceAll("_", " "))]));
 
 function updateOutput(e){
 	e.preventDefault();   // stops the POST
@@ -216,13 +212,13 @@ function outputCraftingSteps(generator, side, craftingList){
 		}
 		{
 			const patternNameTd = document.createElement("td");
-			patternNameTd.textContent = patternNiceName[pattern]; 
+			patternNameTd.textContent = toTitleCase(pattern.name); 
 			craftStepTr.append(patternNameTd);
 		}
 		{
 			const patternImageTd = document.createElement("td");
 			const patternImage = document.createElement("img");
-			patternImage.src = `./icons/${pattern}.png`;
+			patternImage.src = `./icons/${pattern.name.replaceAll(" ","_")}.png`;
 			patternImageTd.append(patternImage);
 			craftStepTr.append(patternImageTd);
 			

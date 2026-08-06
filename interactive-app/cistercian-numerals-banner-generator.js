@@ -32,32 +32,6 @@ export const COLOR = enumFromArray([
 	"BLACK",
 ]);
 
-/** 
-	Enum for the names of patterns. The values are the name as used in the banner_patterns tag.
-	@enum {string}
-*/
-export const PATTERN = Object.freeze({
-	BASE: "stripe_bottom",
-	BASE_DEXTER_CANTON: "square_bottom_left",
-	BASE_INDENTED: "triangles_bottom",
-	BASE_SINSITER_CANTON: "square_bottom_right",
-	BORDURE: "border",
-	CHEVRON: "triangle_bottom",
-	CHIEF: "stripe_top",
-	CHIEF_DEXTER_CANTON: "square_top_left",
-	CHIEF_INDENTED: "triangles_top",
-	CHIEF_SINISTER_CANTON: "square_top_right",
-	FESS: "stripe_middle",
-	INVERTED_CHEVRON: "triangle_top",
-	LOZENGE: "rhombus",
-	PALE_DEXTER: "stripe_left",
-	PALE_SININSTER: "stripe_right",
-	PER_FESS: "half_horizontal",
-	PER_FESS_INVERTED: "half_horizontal_bottom",
-	PER_PALE: "half_vertical",
-	PER_PALE_INVERTED: "half_vertical_right",
-});
-
 
 /**
 	@enum{number}
@@ -82,7 +56,7 @@ export const BANNER_SIDE = enumFromArray([
 */
 
 /**
-	@typedef {Array.<{pattern:PATTERN,color:COLOR}>} patternsArray
+	@typedef {Array.<{pattern:PatternEntry,color:COLOR}>} patternsArray
 */
 
 /**
@@ -102,6 +76,74 @@ export const BANNER_SIDE = enumFromArray([
 //}
 // #endregion data types
 
+
+//# region patterns
+//{
+
+/**
+	@typedef {Object} PatternEntry
+	@property {string} name The user friendly name of the pattern
+	@property {string} tagId The value used for banner_patterns tag
+*/
+
+class PatternEntrySetBuilder {
+	
+	/**
+		@type {Object.<string, PatternEntry>}
+	*/
+	#entrySet
+	
+	/**
+		@param {Array.<[string,string]>} arguments to make the entries. [0] is key name, [1] is tagId. the keys are formed from the name by replacing spaces for underscores and making all uppercase.
+	*/
+	constructor(args){
+		this.#entrySet = {};
+		args.forEach(([name,tagId])=>{
+			const key = name.replaceAll(" ", "_").toUpperCase();
+			this.add(key,name,tagId);
+		});
+	}
+	
+	add(key,name,tagId){
+		this.#entrySet[key] = {name, tagId};
+		return this; // for chaining
+	}
+	
+	build(){
+		return Object.freeze(this.#entrySet);
+	}
+}
+
+/**
+	@type {Object.<string, PatternEntry>}
+*/
+export const PATTERN = (
+	new PatternEntrySetBuilder([
+		[ "base",                  "stripe_bottom"],
+		[ "base dexter canton",    "square_bottom_left"],
+		[ "base indented",         "triangles_bottom"],
+		[ "base sinsiter canton",  "square_bottom_right"],
+		[ "bordure",               "border"],
+		[ "chevron",               "triangle_bottom"],
+		[ "chief",                 "stripe_top"],
+		[ "chief dexter canton",   "square_top_left"],
+		[ "chief indented",        "triangles_top"],
+		[ "chief sinister canton", "square_top_right"],
+		[ "fess",                  "stripe_middle"],
+		[ "inverted chevron",      "triangle_top"],
+		[ "lozenge",               "rhombus"],
+		[ "pale dexter",           "stripe_left"],
+		[ "pale sininster",        "stripe_right"],
+		[ "per fess",              "half_horizontal"],
+		[ "per fess inverted",     "half_horizontal_bottom"],
+		[ "per pale",              "half_vertical"],
+		[ "per pale inverted",     "half_vertical_right"]
+	])
+	.build()
+);
+
+//}
+// #endregion patterns
 
 /**
 	The banner color and the banner_patterns tag.
@@ -142,7 +184,7 @@ class BannerSpecificationBuilder {
 	/**
 		Add a pattern to the banner.
 		@param {COLOR} patternColor
-		@param {PATTERN} patternShape
+		@param {PatternEntry} patternShape
 		@return {BannerSpecificationBuilder} this for chaining.
 	*/
 	add(patternColor, patternShape){
@@ -186,7 +228,7 @@ class BannerSpecificationBuilder {
 		const tagBody = (
 			this.#patterns
 				.map(
-					({pattern,color}) => `{pattern:${pattern.toLowerCase()},color:${color}}`
+					({pattern,color}) => `{pattern:${pattern.tagId},color:${color}}`
 				)
 				.join(",")
 		);
@@ -587,11 +629,6 @@ export class CistercianNumeralBannerGenerator {
 		@returns {BannerSpecificationBuilder} The generated banner specification.
 	*/
 	#generate_patterns_for_one_side(side){
-		const patterns = [];
-		patterns.add = (color, pattern)=>patterns.push(
-			`{pattern:${pattern.toLowerCase()},color:${color}}`
-		);
-		
 		// Parameters describing the two digits to make, with A having the larger face-value if they're unequal.
 		const {
 			/** @type {DigitParameters} */ larger:  A,
