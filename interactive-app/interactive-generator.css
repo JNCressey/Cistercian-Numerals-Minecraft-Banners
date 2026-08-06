@@ -1,74 +1,112 @@
 /* --- image previews--- */
-canvas, canvas img {
-	height: 10lh;
-}
+	canvas, canvas img {
+		height: 10lh;
+	}
 
-.previewBorder {
-	width: fit-content;
-	height: fit-content;
-	border: 1px grey solid;
-	padding: 10px;
-}
+	.previewBorder {
+		width: fit-content;
+		height: fit-content;
+		border: 1px grey solid;
+		padding: 10px;
+	}
 /* --- */
-
 
 /* --- Two-section layout --- */
-#outputSides {
-	margin-top:1lh;
-	display: flex;
-	flex-wrap: wrap;      /* allows children to move to the next line */
-}
+	#outputSides {
+		margin-top:1lh;
+		display: flex;
+		flex-wrap: wrap;      /* allows children to move to the next line */
+	}
 
-#outputSides>* {
-	flex: 1 1 0;
-	min-width: max-content; /* prevents shrinking below content size */
-	box-sizing: border-box;
-	border: 1px solid lightgray;
-	padding: 0 0.5em;
-}
+	#outputSides>* {
+		flex: 1 1 0;
+		min-width: max-content; /* prevents shrinking below content size */
+		box-sizing: border-box;
+		border: 1px solid lightgray;
+		padding: 0 0.5em;
+	}
 /* --- */
 
-
-.warningChangedInput {
-	background: red;
-	font-weight: bold;
-	color: white;
-}
-
-
-.giveCommand {
-	width: 100%;
-	resize: vertical;
-	min-height: 5lh;
-}
+/* --- give command ---*/
+	.warningChangedInput {
+		background: red;
+		font-weight: bold;
+		color: white;
+	}
 
 
-.craftingList {
-	min-height: 9em;
-}
+	.giveCommand {
+		width: 100%;
+		resize: vertical;
+		min-height: 5lh;
+	}
+/* --- */
 
 
 /* --- crafting list items --- */
-.craftingList li {
-	height: 3em;
-	border: 2px solid #444;
-	border-radius: 0.5em;
-}
+	.craftingList {
+		min-height: 9em;
+	}
+	
+	.craftingList table{
+	  width: 100%;
+	  border-collapse: separate;
+	  border-spacing: 0; 
+	}
 
-.craftingList li>* {
-	margin: 0.5em;
-}
+	.craftingList tr {
+		height: 4em;
+	}
 
-.craftingList li>*:nth-child(2) {
-	margin-right: 4em;
-}
 
-.craftingList span {
-	white-space: nowrap;
-	margin-right:1em;
-}
-.craftingList img {
-width: 2em;
-height: 2em;
-}
+	/* -- border around table row -- */
+		.craftingList tr {
+		  position: relative;
+		}
+
+		.craftingList tr::before { 
+		  content: "";
+		  position: absolute;
+		  inset: 0;                /* top:0; right:0; bottom:0; left:0 */
+		  border: 2px solid #444;
+		  border-radius: 0.5em;
+		  pointer-events: none;    /* don't block clicks */
+		}
+
+		.craftingList td,
+		.craftingList th {
+		  background: #fff;        /* ensures the pseudo-element sits behind cells */
+		}
+	/* -- */
+
+
+	/* -- column spacing --*/
+		.craftingList td,
+		.craftingList th {
+			width:0.1%;
+			white-space: nowrap;
+		}
+
+		.craftingList td:nth-child(3) {
+			padding-right: 5ch;
+		}
+
+		.craftingList td:last-child {
+			width:100%;
+		}
+	/* -- */
+
+
+	/* -- cell contents -- */
+		.craftingList td,
+		.craftingList th {
+		  padding: 0.5em;
+			text-align: left;
+		}
+
+		.craftingList img {
+			width: 2em;
+			height: 2em;
+		}
+	/* -- */
 /* --- */

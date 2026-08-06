@@ -91,7 +91,7 @@ function outputSide(num, generator, side){
 	}
 	
 	{ // crafting list
-		const craftingList = document.querySelector(`#${outputSectionId} .craftingList`);
+		const craftingList = document.querySelector(`#${outputSectionId} .craftingList table`);
 		outputCraftingSteps(generator, side, craftingList);
 	}
 }
@@ -153,56 +153,78 @@ function outputGiveCommand(generator, side, giveCommandOutputArea){
 	add the required crafting steps to the crafting list.
 	@param {CistercianNumeralBannerGenerator} generator
 	@param {BANNER_SIDE} side
-	@param {HTMLOListElement} craftingList The target list to add the steps to.
+	@param {HTMLTableElement} craftingList The target list to add the steps to.
 */
 function outputCraftingSteps(generator, side, craftingList){
 	const bannerSpecification = generator.getBannerSpecification(side);
 	craftingList.replaceChildren(); // Removes all child nodes
 	
 	{ // base banner
-		const baseBannerLi = document.createElement("li");
+		const baseBannerTr = document.createElement("tr");
 		{
-			const bannerName = document.createElement("span");
-			bannerName.textContent = `${toTitleCase(bannerSpecification.baseColor)} Banner`;
-			baseBannerLi.append(bannerName);
+			const baseBannerTh = document.createElement("th");
+			baseBannerTh.textContent = `Start.`;
+			baseBannerTr.append(baseBannerTh);
 		}
 		{
+			const bannerNameTd = document.createElement("td");
+			bannerNameTd.textContent = `${toTitleCase(bannerSpecification.baseColor)} Banner`;
+			baseBannerTr.append(bannerNameTd);
+		}
+		{
+			const bannerImageTd = document.createElement("td");
 			const bannerImage = document.createElement("img");
 			bannerImage.src = `./icons/${bannerSpecification.baseColor}-banner.png`;
-			baseBannerLi.append(bannerImage);
+			bannerImageTd.append(bannerImage);
+			baseBannerTr.append(bannerImageTd);
 			
 		}
-		craftingList.append(baseBannerLi);
+		{
+			//empty cells
+			baseBannerTr.append(document.createElement("td"));
+			baseBannerTr.append(document.createElement("td"));
+		}
+		craftingList.append(baseBannerTr);
 	}
 	
 	// loom pattern steps
-	bannerSpecification.patterns.forEach(({pattern,color}) => {
-		const craftStepLi = document.createElement("li");
+	bannerSpecification.patterns.forEach(({pattern,color},index) => {
+		const craftStepTr = document.createElement("tr");
 		{
-			const dyeColor = document.createElement("span");
-			dyeColor.textContent = `${toTitleCase(color)} Dye`;
-			craftStepLi.append(dyeColor);
+			const craftStepTh = document.createElement("th");
+			craftStepTh.textContent = `Step ${index+1}.`;
+			craftStepTr.append(craftStepTh);
 		}
 		{
+			const dyeColorTd = document.createElement("td");
+			dyeColorTd.textContent = `${toTitleCase(color)} Dye`;
+			craftStepTr.append(dyeColorTd);
+		}
+		{
+			const dyeImageTd = document.createElement("td");
 			const dyeImage = document.createElement("img");
 			dyeImage.src = `./icons/${color}-dye.png`;
-			craftStepLi.append(dyeImage);
+			dyeImageTd.append(dyeImage);
+			craftStepTr.append(dyeImageTd);
 			
 		}
 		{
-			const patternName = document.createElement("span");
+			const patternNameTd = document.createElement("td");
 			/*** todo: have a map of the print friendly names instead of key reverse lookup*/
-			patternName.textContent = `${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`;
-			craftStepLi.append(patternName);
+			patternNameTd.textContent = `${toTitleCase(objectKeyFromValue(PATTERN,pattern))}`;
+			craftStepTr.append(patternNameTd);
 		}
 		{
+			const patternImageTd = document.createElement("td");
 			const patternImage = document.createElement("img");
 			patternImage.src = `./icons/${pattern}.png`;
-			craftStepLi.append(patternImage);
+			patternImageTd.append(patternImage);
+			craftStepTr.append(patternImageTd);
 			
 		}
-		craftingList.append(craftStepLi);
+		craftingList.append(craftStepTr);
 	});
+	
 }
 
 //}
