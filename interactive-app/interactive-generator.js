@@ -15,7 +15,8 @@ import {drawCistercianNumeral} from "./cistercian-numeral-draw-canvas.js";
 			- <canvas class="bannerPreview">
 			- <textarea class="giveCommand">
 			- <button class="copyCommandButton">
-			- <ol class="craftingList">
+			- <div class="craftingList"> containing a <table>
+			
 			
 			
 */
