@@ -2,6 +2,7 @@
 import {COLOR, PATTERN} from "./banner-types.js";
 import {BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
 import {drawCistercianNumeral} from "./cistercian-numeral-draw-canvas.js";
+import {drawBannerPreview} from "./banner-draw-canvas.js";
 
 /*
 	assume the frontend html document has
@@ -85,7 +86,7 @@ function outputSide(num, generator, side){
 	
 	{ // banner preview
 		const bannerPreview = document.querySelector(`#${outputSectionId} .bannerPreview`);
-		outputBannerPreview(generator,side,bannerPreview);
+		drawBannerPreview(generator.getBannerSpecification(side), bannerPreview);
 	}
 	
 	{ // give command
@@ -113,32 +114,6 @@ function outputSideHeading(num, side, headingEl){
 	headingEl.textContent=`${toTitleCase(side)} Banner: ${partialNum}`;
 }
 
-
-/**
-	add the required crafting steps to the crafting list.
-	@param {CistercianNumeralBannerGenerator} generator
-	@param {BANNER_SIDE} side
-	@param {HTMLCanvasElement} bannerPreview The target img to change the src of.
-*/
-function outputBannerPreview(generator,side,bannerPreview){
-	const bannerSpecification = generator.getBannerSpecification(side);
-	/*** todo */
-	const cx = bannerPreview.getContext("2d");
-	
-	cx.clearRect(0, 0, bannerPreview.width, bannerPreview.height);
-	cx.lineWidth=10;
-	
-	cx.beginPath();
-	cx.moveTo(100,0);
-	cx.lineTo(0,0);
-	cx.lineTo(0,100);
-	cx.stroke();
-	
-	cx.beginPath();
-	cx.moveTo(0,generator.num%100);
-	cx.lineTo((generator.num-generator.num%100)/100,0);
-	cx.stroke();
-}
 
 /**
 	add the required crafting steps to the crafting list.
