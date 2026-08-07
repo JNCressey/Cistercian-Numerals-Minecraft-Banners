@@ -51,7 +51,7 @@ I wrote a module that draws the result of what the Cistercian numeral is suppose
 I wrote a module that draws a preview of the banner on a canvas element. It iterates over the sequence of banner patterns, provided by the other module, and calls a function that draws that pattern step.
 
 <!-- todo src -->
-I'm hosting the interactive generator on github pages: [Cistercian Numerals Minecraft Banners Generator]()
+I'm hosting the interactive generator on Github Pages: [Cistercian Numerals Minecraft Banners Generator](https://jncressey.github.io/blogs/minecraft/cistercian-numerals-banners/interactive-generator.html)
 
 
 ## Flowchart
