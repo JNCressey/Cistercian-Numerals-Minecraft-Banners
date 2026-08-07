@@ -84,7 +84,7 @@ class BannerSpecificationBuilder {
 	/**
 		Add a pattern to the banner.
 		@param {COLOR} patternColor
-		@param {PatternEntry} patternShape
+		@param {import('./banner-types.js').PatternEntry} patternShape
 		@return {BannerSpecificationBuilder} this for chaining.
 	*/
 	add(patternColor, patternShape){
