@@ -6,18 +6,52 @@ My repo: [https://github.com/JNCressey/Cistercian-Numerals-Minecraft-Banners](ht
 
 ## Intro
 
-<!-- describe what cistercian numerals are -->
+Cistercian numerals are symbols that can represent the numbers 1-9999, invented by Cistercian monks in the early 13th century. 
 
-<!-- explain how they allow denser numbers than minecraft arabic numeral banners-->
+This Numberphile video explains how they work: [Youtube: 
+The Forgotten Number System - Numberphile](https://www.youtube.com/watch?v=9p55Qgt7Ciw)
+
+They act as a compact version of base-10, with the four corners of the glyph representing the four digits. The order of the digits is like a backwards "Z" pattern with the top-right corner representing the units place. 
+
+<figure>
+	<!-- todo alt text -->
+	<img src="examples/cistercian-numeral-forms.png" alt="">
+	<figcaption>The form of each digit</figcaption>
+</figure>
+
+<figure>
+	<!-- todo alt text -->
+	<img src="examples/cistercian-numerals.png" alt="">
+	<figcaption>Some examples of Cistercian numerals</figcaption>
+</figure>
+
+The compact design of the numerals can be used Minecraft. Usually, one way of showing numbers in Minecraft is to use banners, with one Arabic numeral per banner.
+
+I designed a set of banner patterns that resemble a half of a Cistercian numeral, which allows two banners to represent a Cistercian numeral which is equivellent to four base-10 digits.
+
+<figure>
+	<!-- todo alt text -->
+	<img src="examples/my-banners.png" alt="">
+	<figcaption>Some examples of my Minecraft banners designs</figcaption>
+</figure>
+
 
 
 ## Web-Browser Based Interactive Generator
 
-<!-- make the web frontend -->
+I made a webpage that can generate the required banner patterns for an input number. I programmed it by writing javascript modules.
 
-I made a javascript file that can generate the required banner patterns.
+There is a core module which generates the data of the required sequence of banner patterns. I made this follow the below flowchart by splitting it into methods.
+- I labelled each point of the main flowchart where flow converges.
+	- From each, I wrote a method that starts at the labelled point and performs the actions and branching of the flowchart. But when it reaches another labelled point, it returns with a call for the corresponding next method.
+- I made a method that implements the auxiliary flowchart, that the other main methods can use as an action for the relevant nodes of the flowchart.
 
-Read the code on GitHub: [https://github.com/JNCressey/Cistercian-Numerals-Minecraft-Banners/blob/main/interactive-app/cistercian-numerals-banner-generator.js](https://github.com/JNCressey/Cistercian-Numerals-Minecraft-Banners/blob/main/interactive-app/cistercian-numerals-banner-generator.js)
+I wrote a module that draws the result of what the Cistercian numeral is supposed to look like. It draws it on a canvas element. To draw each digit, I made a method that can be given an origin and set of directions so that it draws the digit with the correct rotation/reflection and position. It draws the digit by defining a square of four points and connecting the required points acording to the digit's face value.
+
+I wrote a module that draws a preview of the banner on a canvas element. It iterates over the sequence of banner patterns, provided by the other module, and calls a function that draws that pattern step.
+
+<!-- todo src -->
+I'm hosting the interactive generator on github pages: [Cistercian Numerals Minecraft Banners Generator]()
 
 
 ## Flowchart
@@ -38,11 +72,13 @@ When the main flowchart tells you to use the auxiliary flowchart, follow the ste
 
 <details>
 	<summary> Main flowchart </summary>
+	<!-- todo alt text -->
 	<img alt="Main flowchart" src="flowcharts/cistercian-numerals-main.png">
 </details>
 
 <details>
 	<summary> Auxiliary flowchart </summary>
+	<!-- todo alt text -->
 	<img alt="Auxiliary flowchart" src="flowcharts/cistercian-numerals-auxiliary.png">
 </details>
 
