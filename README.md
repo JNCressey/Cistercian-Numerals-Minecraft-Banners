@@ -25,7 +25,7 @@ They act as a compact version of base-10, with the four corners of the glyph rep
 	<figcaption>Some examples of Cistercian numerals</figcaption>
 </figure>
 
-The compact design of the numerals can be used Minecraft. Usually, one way of showing numbers in Minecraft is to use banners, with one Arabic numeral per banner.
+The compact design of the numerals can be useful in Minecraft. Usually, one way of showing numbers in Minecraft is to use banners, with one Arabic numeral per banner.
 
 I designed a set of banner patterns that resemble a half of a Cistercian numeral, which allows two banners to represent a Cistercian numeral which is equivellent to four base-10 digits.
 
