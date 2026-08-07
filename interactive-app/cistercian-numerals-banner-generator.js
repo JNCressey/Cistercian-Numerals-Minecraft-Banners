@@ -122,7 +122,7 @@ export const PATTERN = (
 		[ "base",                  "stripe_bottom"],
 		[ "base dexter canton",    "square_bottom_left"],
 		[ "base indented",         "triangles_bottom"],
-		[ "base sinsiter canton",  "square_bottom_right"],
+		[ "base sinister canton",  "square_bottom_right"],
 		[ "bordure",               "border"],
 		[ "chevron",               "triangle_bottom"],
 		[ "chief",                 "stripe_top"],
@@ -133,7 +133,7 @@ export const PATTERN = (
 		[ "inverted chevron",      "triangle_top"],
 		[ "lozenge",               "rhombus"],
 		[ "pale dexter",           "stripe_left"],
-		[ "pale sininster",        "stripe_right"],
+		[ "pale sinister",         "stripe_right"],
 		[ "per fess",              "half_horizontal"],
 		[ "per fess inverted",     "half_horizontal_bottom"],
 		[ "per pale",              "half_vertical"],
@@ -303,7 +303,7 @@ class PatternGeneratorStateMachine {
 							this.banner.add(
 								this.colors.foreground,
 								(this.side===BANNER_SIDE.RIGHT)
-									? PATTERN.PALE_SININSTER
+									? PATTERN.PALE_SINISTER
 									: PATTERN.PALE_DEXTER
 							);
 						}
@@ -444,7 +444,7 @@ class PatternGeneratorStateMachine {
 			this.colors.foreground,
 			(this.side === BANNER_SIDE.RIGHT)
 				? PATTERN.PALE_DEXTER
-				: PATTERN.PALE_SININSTER
+				: PATTERN.PALE_SINISTER
 		);
 		return true; //complete
 	}
@@ -501,7 +501,7 @@ class PatternGeneratorStateMachine {
 						[
 							PATTERN.CHIEF_SINISTER_CANTON,
 							PATTERN.CHIEF_DEXTER_CANTON,
-							PATTERN.BASE_SINSITER_CANTON,
+							PATTERN.BASE_SINISTER_CANTON,
 							PATTERN.BASE_DEXTER_CANTON,
 						][digitParameters.exponent]
 					)
@@ -521,7 +521,7 @@ class PatternGeneratorStateMachine {
 							PATTERN.CHIEF_DEXTER_CANTON,
 							PATTERN.CHIEF_SINISTER_CANTON,
 							PATTERN.BASE_DEXTER_CANTON,
-							PATTERN.BASE_SINSITER_CANTON,
+							PATTERN.BASE_SINISTER_CANTON,
 						][digitParameters.exponent]
 					);
 				return;
@@ -539,7 +539,7 @@ class PatternGeneratorStateMachine {
 				this.banner.add(
 					this.colors.foreground,
 					(this.side === BANNER_SIDE.RIGHT)
-						? PATTERN.PALE_SININSTER
+						? PATTERN.PALE_SINISTER
 						: PATTERN.PALE_DEXTER
 				);
 				return;
@@ -550,7 +550,7 @@ class PatternGeneratorStateMachine {
 					.add(
 						this.colors.foreground,
 						(this.side === BANNER_SIDE.RIGHT)
-							? PATTERN.PALE_SININSTER
+							? PATTERN.PALE_SINISTER
 							: PATTERN.PALE_DEXTER
 					);
 				return;
@@ -566,7 +566,7 @@ class PatternGeneratorStateMachine {
 					.add(
 						this.colors.foreground,
 						(this.side === BANNER_SIDE.RIGHT)
-							? PATTERN.PALE_SININSTER
+							? PATTERN.PALE_SINISTER
 							: PATTERN.PALE_DEXTER
 					);
 				return;
