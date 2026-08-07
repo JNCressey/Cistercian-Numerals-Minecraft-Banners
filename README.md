@@ -1,8 +1,4 @@
-<div style="color:darkred">this blog is not complete yet, still to finish writing up</div>
-
 # Cistercian Numerals Minecraft Banners
-
-My repo: [https://github.com/JNCressey/Cistercian-Numerals-Minecraft-Banners](https://github.com/JNCressey/Cistercian-Numerals-Minecraft-Banners)
 
 ## Intro
 
@@ -13,27 +9,27 @@ The Forgotten Number System - Numberphile](https://www.youtube.com/watch?v=9p55Q
 
 They act as a compact version of base-10, with the four corners of the glyph representing the four digits. The order of the digits is like a backwards "Z" pattern with the top-right corner representing the units place. 
 
-<figure>
+<details>
+	<summary>The form of each digit</summary>
 	<!-- todo alt text -->
 	<img src="examples/cistercian-numeral-forms.png" alt="">
-	<figcaption>The form of each digit</figcaption>
-</figure>
+</details>
 
-<figure>
+<details>
+	<summary>Some examples of Cistercian numerals</summary>
 	<!-- todo alt text -->
 	<img src="examples/cistercian-numerals.png" alt="">
-	<figcaption>Some examples of Cistercian numerals</figcaption>
-</figure>
+</details>
 
 The compact design of the numerals can be useful in Minecraft. Usually, one way of showing numbers in Minecraft is to use banners, with one Arabic numeral per banner.
 
 I designed a set of banner patterns that resemble a half of a Cistercian numeral, which allows two banners to represent a Cistercian numeral which is equivellent to four base-10 digits.
 
-<figure>
+<details>
+	<summary>Some examples of my Minecraft banners designs</summary>
 	<!-- todo alt text -->
 	<img src="examples/my-banners.png" alt="">
-	<figcaption>Some examples of my Minecraft banners designs</figcaption>
-</figure>
+</details>
 
 
 
@@ -50,7 +46,6 @@ I wrote a module that draws the result of what the Cistercian numeral is suppose
 
 I wrote a module that draws a preview of the banner on a canvas element. It iterates over the sequence of banner patterns, provided by the other module, and calls a function that draws that pattern step.
 
-<!-- todo src -->
 I'm hosting the interactive generator on Github Pages: [Cistercian Numerals Minecraft Banners Generator](https://jncressey.github.io/blogs/minecraft/cistercian-numerals-banners/interactive-generator.html)
 
 
