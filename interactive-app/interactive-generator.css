@@ -1,3 +1,11 @@
+
+#generatorWidget {
+	border: 1px solid #aaa;
+	padding: 0.5em;
+	border-radius: 4px;
+}
+
+
 /* --- image previews--- */
 	canvas, canvas img {
 		height: 10lh;
