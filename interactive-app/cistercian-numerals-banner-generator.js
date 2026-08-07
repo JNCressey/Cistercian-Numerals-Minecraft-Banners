@@ -36,19 +36,6 @@ export const BANNER_SIDE = enumFromArray([
 
 
 /**
-	@typedef {Array.<{pattern:PatternEntry,color:COLOR}>} patternsArray
-*/
-
-
-/**
-	The banner color and the banner_patterns tag.
-	@typedef {Object} BannerSpecification
-	@property {COLOR} baseColor
-	@property {patternsArray} patterns
-*/
-
-
-/**
 	@typedef DigitParameters
 	@property {number} exponent The exponent of base-10 for the place value.
 	@property {number} faceValue The face value of the digit 0-9.
@@ -63,7 +50,7 @@ export const BANNER_SIDE = enumFromArray([
 */
 class BannerSpecificationBuilder {
 	/**
-		@type {patternsArray}
+		@type {import('./banner-types.js').PatternsArray}
 		The pattern elements 
 	*/
 	#patterns = [];
@@ -116,7 +103,7 @@ class BannerSpecificationBuilder {
 	//{
 	
 	/**
-		@type {BannerSpecification}
+		@type {import('./banner-types.js').BannerSpecification}
 	*/
 	get bannerSpecification(){
 		return {
@@ -601,7 +588,7 @@ export class CistercianNumeralBannerGenerator {
 	
 	/**
 		@param {BANNER_SIDE} side
-		@return {BannerSpecification}
+		@return {import('./banner-types.js').BannerSpecification}
 	*/
 	getBannerSpecification(side){
 		const banner = this.#bannerSpecifications[side];

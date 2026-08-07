@@ -1,3 +1,23 @@
+
+// #region datatypes
+//{
+	
+/**
+	The banner color and the banner_patterns tag.
+	@typedef {Object} BannerSpecification
+	@property {COLOR} baseColor
+	@property {PatternsArray} patterns
+*/
+
+
+/**
+	@typedef {Array.<{pattern:PatternEntry,color:COLOR}>} PatternsArray
+*/
+
+//}
+// #endregion data types
+
+
 //# region colors
 //{
 
