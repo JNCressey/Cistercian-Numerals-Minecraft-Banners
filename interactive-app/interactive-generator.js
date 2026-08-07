@@ -170,13 +170,13 @@ function outputCraftingSteps(generator, side, craftingList){
 		}
 		{
 			const bannerNameTd = document.createElement("td");
-			bannerNameTd.textContent = `${toTitleCase(bannerSpecification.baseColor)} Banner`;
+			bannerNameTd.textContent = `${toTitleCase(bannerSpecification.baseColor.replaceAll("_"," "))} Banner`;
 			baseBannerTr.append(bannerNameTd);
 		}
 		{
 			const bannerImageTd = document.createElement("td");
 			const bannerImage = document.createElement("img");
-			bannerImage.src = `./icons/${bannerSpecification.baseColor}-banner.png`;
+			bannerImage.src = `./icons/${bannerSpecification.baseColor.replaceAll("_","-")}-banner.png`;
 			bannerImageTd.append(bannerImage);
 			baseBannerTr.append(bannerImageTd);
 			
@@ -199,13 +199,13 @@ function outputCraftingSteps(generator, side, craftingList){
 		}
 		{
 			const dyeColorTd = document.createElement("td");
-			dyeColorTd.textContent = `${toTitleCase(color)} Dye`;
+			dyeColorTd.textContent = `${toTitleCase(color.replaceAll("_"," "))} Dye`;
 			craftStepTr.append(dyeColorTd);
 		}
 		{
 			const dyeImageTd = document.createElement("td");
 			const dyeImage = document.createElement("img");
-			dyeImage.src = `./icons/${color}-dye.png`;
+			dyeImage.src = `./icons/${color.replaceAll("_","-")}-dye.png`;
 			dyeImageTd.append(dyeImage);
 			craftStepTr.append(dyeImageTd);
 			
@@ -218,7 +218,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		{
 			const patternImageTd = document.createElement("td");
 			const patternImage = document.createElement("img");
-			patternImage.src = `./icons/${pattern.name.replaceAll(" ","_")}.png`;
+			patternImage.src = `./icons/${pattern.name.replaceAll(" ","-")}.png`;
 			patternImageTd.append(patternImage);
 			craftStepTr.append(patternImageTd);
 			
@@ -239,7 +239,7 @@ function outputCraftingSteps(generator, side, craftingList){
 */
 function addColorOptionsToSelect(selectEl, defaultValue){
 	for (const color of Object.values(COLOR)){
-		selectEl.appendChild(new Option(toTitleCase(color), color));
+		selectEl.appendChild(new Option(toTitleCase(color.replaceAll("_"," ")), color));
 	}
 	selectEl.value = defaultValue;
 }

@@ -111,10 +111,16 @@
 		  padding: 0.5em;
 			text-align: left;
 		}
-
+		
 		.craftingList img {
 			width: 2em;
 			height: 2em;
+		}
+		@media screen and (min-width: 600px) {
+			.craftingList img {
+				width: 3em;
+				height: 3em;
+			}
 		}
 	/* -- */
 /* --- */
