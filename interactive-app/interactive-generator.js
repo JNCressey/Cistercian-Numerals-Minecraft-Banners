@@ -1,6 +1,7 @@
-import {COLOR, PATTERN, BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
-import {drawCistercianNumeral} from "./cistercian-numeral-draw-canvas.js";
 
+import {COLOR, PATTERN} from "./banner-types.js";
+import {BANNER_SIDE, CistercianNumeralBannerGenerator} from "./cistercian-numerals-banner-generator.js";
+import {drawCistercianNumeral} from "./cistercian-numeral-draw-canvas.js";
 
 /*
 	assume the frontend html document has
