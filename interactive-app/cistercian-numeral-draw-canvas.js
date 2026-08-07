@@ -26,7 +26,7 @@ class cisternNumeralCanvasDrawer
 		this.height = this.canvas.height
 		
 		// grid of points
-		this.B = [this.width/2, 0      + this.lw];
+		this.B = [this.width/2, 0           + this.lw];
 		this.K = [this.width/2, this.height - this.lw];
 		this.digitSize = Math.min(this.width/2, this.height/3) - this.lw/2;
 		
