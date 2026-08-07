@@ -152,7 +152,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		{
 			const bannerImageTd = document.createElement("td");
 			const bannerImage = document.createElement("img");
-			bannerImage.src = `./icons/${bannerSpecification.baseColor.replaceAll("_","-")}-banner.png`;
+			bannerImage.src = `./assets/icons/${bannerSpecification.baseColor.replaceAll("_","-")}-banner.png`;
 			bannerImageTd.append(bannerImage);
 			baseBannerTr.append(bannerImageTd);
 			
@@ -181,7 +181,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		{
 			const dyeImageTd = document.createElement("td");
 			const dyeImage = document.createElement("img");
-			dyeImage.src = `./icons/${color.replaceAll("_","-")}-dye.png`;
+			dyeImage.src = `./assets/icons/${color.replaceAll("_","-")}-dye.png`;
 			dyeImageTd.append(dyeImage);
 			craftStepTr.append(dyeImageTd);
 			
@@ -194,7 +194,7 @@ function outputCraftingSteps(generator, side, craftingList){
 		{
 			const patternImageTd = document.createElement("td");
 			const patternImage = document.createElement("img");
-			patternImage.src = `./icons/${pattern.name.replaceAll(" ","-")}.png`;
+			patternImage.src = `./assets/icons/${pattern.name.replaceAll(" ","-")}.png`;
 			patternImageTd.append(patternImage);
 			craftStepTr.append(patternImageTd);
 			
