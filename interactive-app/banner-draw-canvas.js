@@ -15,27 +15,24 @@ export function drawBannerPreview(bannerSpecification, bannerPreview) {
 	mapping of COLOR to valid color input for drawing.
 	@type {Object.<COLOR, string>}
 */
-const webColor = 
-Object.entries(COLOR)
-.reduce((o, [k,v]) => (o[v] = v.replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase()).replaceAll(" ", ""), o), {});/*{
-	[COLOR.WHITE]: "",
-	[COLOR.ORANGE]: "",
-	[COLOR.MAGENTA]: "",
-	[COLOR.LIGHT_BLUE]: "",
-	[COLOR.YELLOW]: "",
-	[COLOR.LIME]: "",
-	[COLOR.PINK]: "",
-	[COLOR.GRAY]: "",
-	[COLOR.LIGHT_GRAY]: "",
-	[COLOR.CYAN]: "",
-	[COLOR.PURPLE]: "",
-	[COLOR.BLUE]: "",
-	[COLOR.BROWN]: "",
-	[COLOR.GREEN]: "",
-	[COLOR.RED]: "",
-	[COLOR.BLACK]: "",
-};*/
-console.log(webColor);
+const webColor = {
+	[COLOR.WHITE]:      "#ecf2f1",
+	[COLOR.ORANGE]:     "#ec791c",
+	[COLOR.MAGENTA]:    "#bd4ab3",
+	[COLOR.LIGHT_BLUE]: "#37aacf",
+	[COLOR.YELLOW]:     "#f1cd3a",
+	[COLOR.LIME]:       "#79bd1d",
+	[COLOR.PINK]:       "#e884a2",
+	[COLOR.GRAY]:       "#444c4e",
+	[COLOR.LIGHT_GRAY]: "#969690",
+	[COLOR.CYAN]:       "#159393",
+	[COLOR.PURPLE]:     "#822faf",
+	[COLOR.BLUE]:       "#3940a1",
+	[COLOR.BROWN]:      "#7d5030",
+	[COLOR.GREEN]:      "#5a7715",
+	[COLOR.RED]:        "#a72c24",
+	[COLOR.BLACK]:      "#1c1c20",
+};
 
 class BannerDrawer
 {
