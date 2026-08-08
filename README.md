@@ -9,13 +9,13 @@ The Forgotten Number System - Numberphile](https://www.youtube.com/watch?v=9p55Q
 
 They act as a compact version of base-10, with the four corners of the glyph representing the four digits. The order of the digits is like a backwards "Z" pattern with the top-right corner representing the units place. 
 
-<details>
+<details open>
 	<summary>The form of each digit</summary>
 	<!-- todo alt text -->
 	<img src="examples/cistercian-numeral-forms.png" alt="">
 </details>
 
-<details>
+<details open>
 	<summary>Some examples of Cistercian numerals</summary>
 	<!-- todo alt text -->
 	<img src="examples/cistercian-numerals.png" alt="">
@@ -25,7 +25,7 @@ The compact design of the numerals can be useful in Minecraft. Usually, one way 
 
 I designed a set of banner patterns that resemble a half of a Cistercian numeral, which allows two banners to represent a Cistercian numeral which is equivellent to four base-10 digits.
 
-<details>
+<details open>
 	<summary>Some examples of my Minecraft banners designs</summary>
 	<!-- todo alt text -->
 	<img src="examples/my-banners.png" alt="">
