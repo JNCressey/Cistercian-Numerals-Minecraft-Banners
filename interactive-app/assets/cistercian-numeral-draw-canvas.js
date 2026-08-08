@@ -33,6 +33,7 @@ class cisternNumeralCanvasDrawer
 		// line style
 		this.cx.lineWidth = this.lw;
 		this.cx.lineCap = "round";
+		this.cx.lineJoin = "round";
 	}
 	
 	
