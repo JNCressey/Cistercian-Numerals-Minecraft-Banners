@@ -35,7 +35,7 @@ I designed a set of banner patterns that resemble a half of a Cistercian numeral
 
 ## Web-Browser Based Interactive Generator
 
-I made a webpage that can generate the required banner patterns for an input number. I programmed it by writing javascript modules.
+I made a webpage that can generate the required banner patterns for an input number. I programmed it by writing Javascript modules.
 
 There is a core module which generates the data of the required sequence of banner patterns. I made this follow the below flowchart by splitting it into methods.
 - I labelled each point of the main flowchart where flow converges.
